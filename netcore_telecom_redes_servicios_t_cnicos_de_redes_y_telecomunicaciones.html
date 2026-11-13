@@ -1,0 +1,2609 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NetCore Telecom & Redes | Ingeniería de Redes, Fibra Óptica y Seguridad IP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            obsidian: '#05080F',
+            panel: '#0C1220',
+            panelHover: '#11192C',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #05080F;
+      color: #F1F5F9;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .enterprise-card {
+      background: #0C1220;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.28s ease;
+    }
+
+    .enterprise-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(6, 182, 212, 0.45);
+      box-shadow: 0 12px 30px -10px rgba(6, 182, 212, 0.14);
+    }
+
+    .subtab-btn {
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .subtab-btn.active {
+      background: rgba(6, 182, 212, 0.12);
+      color: #22D3EE;
+      border-color: rgba(6, 182, 212, 0.5);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(30, 41, 59, 0.9);
+      height: 5px;
+      border-radius: 999px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #06B6D4;
+      cursor: pointer;
+      border: 2px solid #05080F;
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(14px) scale(0.992); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .view-animate {
+      animation: fadeSlideUp 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .subtab-btn {
+      position: relative;
+      transition: all 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+      white-space: nowrap;
+    }
+
+    .subtab-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .subtab-btn.active {
+      background: rgba(6, 182, 212, 0.14);
+      color: #22D3EE;
+      border-color: rgba(6, 182, 212, 0.55);
+      box-shadow: 0 4px 16px -4px rgba(6, 182, 212, 0.25);
+    }
+
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+    .scroll-reveal.from-top {
+      transform: translateY(-24px);
+    }
+    .scroll-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media print {
+      body * { visibility: hidden !important; }
+      #pdf-quote-modal, #pdf-quote-modal * { visibility: visible !important; }
+      #pdf-quote-modal {
+        position: fixed !important;
+        inset: 0 !important;
+        background: #ffffff !important;
+        padding: 0 !important;
+      }
+      #pdf-quote-actions { display: none !important; }
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-cyan-500 selection:text-slate-950 min-h-screen flex flex-col">
+
+  <!-- Barra de progreso de lectura superior -->
+  <div id="scroll-progress-bar" class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-cyan-400 to-emerald-400 z-[60] transition-all duration-150" style="width: 0%;"></div>
+
+  <!-- HEADER FIJO MINIMALISTA -->
+  <header id="main-site-header" class="sticky top-0 z-40 bg-[#05080F]/92 backdrop-blur-md border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-3">
+        <!-- Logo -->
+        <button onclick="switchMainTab('inicio')" class="flex items-center gap-2.5 text-left group shrink-0">
+          <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-slate-950 shadow-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <circle cx="12" cy="5" r="2.5" />
+              <circle cx="5" cy="19" r="2.5" />
+              <circle cx="19" cy="19" r="2.5" />
+              <path d="M10.8 7.2L6.2 16.8M13.2 7.2l4.6 9.6M7.5 19h9" />
+            </svg>
+          </div>
+          <div>
+            <span class="font-bold text-white tracking-tight text-base sm:text-lg block leading-none">NetCore <span class="text-cyan-400">Telecom</span></span>
+            <span class="text-[10px] text-slate-400 uppercase tracking-widest hidden sm:block mt-0.5">Redes & Ingeniería IP</span>
+          </div>
+        </button>
+
+        <!-- Buscador Global -->
+        <div class="hidden md:flex items-center flex-1 max-w-md mx-4">
+          <div class="relative w-full">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+            </svg>
+            <input
+              id="global-search"
+              type="text"
+              oninput="handleSearch(this.value)"
+              placeholder="Buscar fibra óptica, cableado Cat 6A, cámaras CCTV..."
+              class="w-full bg-[#0C1220] border border-slate-800 rounded-lg pl-9 pr-8 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500/60 transition"
+            />
+            <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs">✕</button>
+          </div>
+        </div>
+
+        <!-- Acciones Derecha -->
+        <div class="flex items-center gap-2">
+          <!-- Botón Favoritos Separado -->
+          <button onclick="switchMainTab('favoritos')" class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#0C1220] hover:bg-slate-800/80 border border-slate-800 text-xs font-medium text-slate-200 transition">
+            <svg class="w-4 h-4 text-rose-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <span class="hidden sm:inline">Favoritos</span>
+            <span id="fav-badge" class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-cyan-500/20 text-cyan-300">0</span>
+          </button>
+
+          <!-- Menú Hamburguesa 3 Líneas -->
+          <button onclick="toggleDrawer()" aria-label="Menú principal" class="p-2 rounded-lg bg-[#0C1220] hover:bg-slate-800 border border-slate-800 text-slate-200 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Buscador Móvil -->
+      <div class="md:hidden pb-2.5">
+        <input
+          id="mobile-search"
+          type="text"
+          oninput="handleSearch(this.value)"
+          placeholder="Buscar servicios, fibra, CCTV o planes..."
+          class="w-full bg-[#0C1220] border border-slate-800 rounded-lg px-3.5 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500/60"
+        />
+      </div>
+
+      <!-- SUB-PESTAÑAS DE NAVEGACIÓN PRINCIPAL -->
+      <nav aria-label="Secciones principales" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-2 border-t border-slate-800/60">
+        <button data-tab="inicio" onclick="switchMainTab('inicio')" class="subtab-btn active px-3.5 py-1.5 rounded-lg border border-transparent text-xs font-medium text-slate-300 hover:text-white">
+          Inicio
+        </button>
+        <button data-tab="servicios" onclick="switchMainTab('servicios')" class="subtab-btn px-3.5 py-1.5 rounded-lg border border-transparent text-xs font-medium text-slate-300 hover:text-white">
+          Servicios y Precios
+        </button>
+        <button data-tab="planes" onclick="switchMainTab('planes')" class="subtab-btn px-3.5 py-1.5 rounded-lg border border-transparent text-xs font-medium text-slate-300 hover:text-white">
+          Planes Mensuales
+        </button>
+        <button data-tab="cotizador" onclick="switchMainTab('cotizador')" class="subtab-btn px-3.5 py-1.5 rounded-lg border border-transparent text-xs font-medium text-slate-300 hover:text-white">
+          Cotizador & Cobertura
+        </button>
+        <button data-tab="diagnostico" onclick="switchMainTab('diagnostico')" class="subtab-btn px-3.5 py-1.5 rounded-lg border border-transparent text-xs font-medium text-slate-300 hover:text-white">
+          Rastreo & Casos
+        </button>
+        <button data-tab="contacto" onclick="switchMainTab('contacto')" class="subtab-btn px-3.5 py-1.5 rounded-lg border border-transparent text-xs font-medium text-slate-300 hover:text-white">
+          Agendar Visita
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MENÚ LATERAL DESPLEGABLE (3 LÍNEAS) -->
+  <div id="drawer-overlay" onclick="toggleDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 hidden"></div>
+  <aside id="nav-drawer" class="fixed top-0 right-0 h-full w-72 sm:w-80 bg-[#0C1220] border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-6">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <span class="font-bold text-white text-sm tracking-wide uppercase">Navegación Rápida</span>
+        <button onclick="toggleDrawer()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">✕</button>
+      </div>
+      <div class="mt-5 space-y-1.5 text-sm">
+        <button onclick="switchMainTab('inicio'); toggleDrawer();" class="w-full text-left px-3.5 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800/70 transition flex items-center justify-between">
+          <span>Resumen Ejecutivo</span><span class="text-slate-500 text-xs">→</span>
+        </button>
+        <button onclick="switchMainTab('servicios'); toggleDrawer();" class="w-full text-left px-3.5 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800/70 transition flex items-center justify-between">
+          <span>Catálogo Técnico (COP)</span><span class="text-slate-500 text-xs">→</span>
+        </button>
+        <button onclick="switchMainTab('planes'); toggleDrawer();" class="w-full text-left px-3.5 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800/70 transition flex items-center justify-between">
+          <span>Pólizas y Mantenimiento</span><span class="text-slate-500 text-xs">→</span>
+        </button>
+        <button onclick="switchMainTab('cotizador'); toggleDrawer();" class="w-full text-left px-3.5 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800/70 transition flex items-center justify-between">
+          <span>Calculadora & Viáticos</span><span class="text-slate-500 text-xs">→</span>
+        </button>
+        <button onclick="switchMainTab('diagnostico'); toggleDrawer();" class="w-full text-left px-3.5 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800/70 transition flex items-center justify-between">
+          <span>Rastreo de Orden & Casos</span><span class="text-slate-500 text-xs">→</span>
+        </button>
+        <button onclick="switchMainTab('favoritos'); toggleDrawer();" class="w-full text-left px-3.5 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800/70 transition flex items-center justify-between">
+          <span>Mis Favoritos Guardados</span><span id="drawer-fav-count" class="text-xs font-bold text-cyan-400">0</span>
+        </button>
+      </div>
+
+      <!-- Emergencia 24/7 -->
+      <div class="mt-6 p-3.5 rounded-xl bg-rose-950/30 border border-rose-500/30">
+        <div class="flex items-center gap-2 text-rose-400 text-xs font-bold uppercase tracking-wider">
+          <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+          Emergencia Crítica 24/7
+        </div>
+        <p class="text-xs text-slate-300 mt-1.5">¿Caída total de red o corte de fibra óptica? Atención prioritaria inmediata.</p>
+        <button onclick="openEmergencyWhatsApp()" class="mt-2.5 w-full py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold transition">
+          Solicitar Cuadrilla Urgente
+        </button>
+      </div>
+    </div>
+
+    <div class="pt-4 border-t border-slate-800 text-xs text-slate-400 space-y-1">
+      <p class="font-semibold text-slate-200">Certificaciones & Normas</p>
+      <p>ANSI/TIA-568-D • ISO/IEC 11801 • RETIE</p>
+      <p class="text-slate-500">Cobertura: Chía, Sabana Centro & Bogotá D.C.</p>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL POR PESTAÑAS -->
+  <main id="main-site-content" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ==================== VISTA 1: INICIO (LIMPIO Y EJECUTIVO) ==================== -->
+    <section id="view-inicio" class="view-animate space-y-10">
+      <!-- Hero Minimalista -->
+      <div class="enterprise-card rounded-2xl p-6 sm:p-10 relative overflow-hidden">
+        <div class="max-w-3xl space-y-5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-cyan-300 text-xs font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            Ingeniería Certificada Fluke Networks & OTDR • Chía y Bogotá D.C.
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.15]">
+            Infraestructura de <span class="text-cyan-400">Redes, Fibra Óptica</span> y Seguridad IP de Alto Rendimiento.
+          </h1>
+
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl">
+            Diseñamos, instalamos y certificamos redes empresariales, cableado estructurado Cat 6/6A, enlaces de fibra óptica y sistemas CCTV 4MP con garantía escrita de 15 años.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button onclick="switchMainTab('servicios')" class="px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-sm transition shadow-sm">
+              Explorar Servicios y Precios
+            </button>
+            <button onclick="switchMainTab('cotizador')" class="px-5 py-2.5 rounded-lg bg-slate-800/90 hover:bg-slate-800 border border-slate-700 text-white font-medium text-sm transition">
+              Cotizar Proyecto (COP) →
+            </button>
+          </div>
+        </div>
+
+        <!-- Métricas Clave -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-800/80">
+          <div>
+            <p class="text-2xl font-bold text-white">15 Años</p>
+            <p class="text-xs text-slate-400 mt-0.5">Garantía en cableado certificado</p>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-cyan-400">&lt; 4 Horas</p>
+            <p class="text-xs text-slate-400 mt-0.5">Respuesta SLA en Sabana y Bogotá</p>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-white">+340</p>
+            <p class="text-xs text-slate-400 mt-0.5">Racks y redes corporativas entregadas</p>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-emerald-400">100%</p>
+            <p class="text-xs text-slate-400 mt-0.5">Entrega con plano y certificación</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accesos Rápidos por Solución -->
+      <div class="scroll-reveal">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-white">Soluciones Principales</h2>
+          <button onclick="switchMainTab('servicios')" class="text-xs text-cyan-400 hover:text-cyan-300 font-medium">Ver catálogo completo →</button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div onclick="jumpToCategory('Cableado')" class="enterprise-card scroll-reveal rounded-xl p-5 cursor-pointer">
+            <span class="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Infraestructura</span>
+            <h3 class="text-base font-bold text-white mt-1.5">Cableado Cat 6 / 6A</h3>
+            <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">Puntos de red certificados con analizador Fluke, patch panels y peinado de racks.</p>
+            <p class="text-xs font-semibold text-slate-200 mt-3">Desde $1.680.000 COP →</p>
+          </div>
+
+          <div onclick="jumpToCategory('Fibra Óptica')" class="enterprise-card scroll-reveal rounded-xl p-5 cursor-pointer">
+            <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Alta Velocidad</span>
+            <h3 class="text-base font-bold text-white mt-1.5">Fibra Óptica & OTDR</h3>
+            <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">Fusión por arco eléctrico monomodo y multimodo para enlaces troncales de 10 Gbps.</p>
+            <p class="text-xs font-semibold text-slate-200 mt-3">Desde $1.280.000 COP →</p>
+          </div>
+
+          <div onclick="jumpToCategory('Seguridad CCTV')" class="enterprise-card scroll-reveal rounded-xl p-5 cursor-pointer">
+            <span class="text-xs font-semibold text-sky-400 uppercase tracking-wider">Videovigilancia</span>
+            <h3 class="text-base font-bold text-white mt-1.5">Cámaras CCTV IP 4MP</h3>
+            <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">Kits completos con visión nocturna, grabación NVR y monitoreo remoto en celular.</p>
+            <p class="text-xs font-semibold text-slate-200 mt-3">Desde $1.590.000 COP →</p>
+          </div>
+
+          <div onclick="jumpToCategory('Redes Wi-Fi')" class="enterprise-card scroll-reveal rounded-xl p-5 cursor-pointer">
+            <span class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Conectividad</span>
+            <h3 class="text-base font-bold text-white mt-1.5">Wi-Fi 6 Empresarial</h3>
+            <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">Cobertura sin cortes con roaming continuo, segmentación VLAN y portal de invitados.</p>
+            <p class="text-xs font-semibold text-slate-200 mt-3">Desde $1.490.000 COP →</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonios Verificados -->
+      <div class="scroll-reveal">
+        <h2 class="text-lg font-bold text-white mb-4">Empresas que Confían en Nuestra Ingeniería</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="enterprise-card scroll-reveal rounded-xl p-5">
+            <p class="text-xs text-slate-300 leading-relaxed">"Organizaron nuestro rack de 24U en Chía y certificaron 32 puntos Cat 6A en un fin de semana sin detener la operación."</p>
+            <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold text-white">Ing. Carlos Mendoza</p>
+                <p class="text-[11px] text-slate-400">Director TI • Logística Sabana S.A.S</p>
+              </div>
+              <span class="text-[11px] text-emerald-400 font-semibold">★★★★★</span>
+            </div>
+          </div>
+
+          <div class="enterprise-card rounded-xl p-5">
+            <p class="text-xs text-slate-300 leading-relaxed">"Instalamos 16 cámaras IP 4MP con enlace de fibra entre porterías en Cajicá. Imagen nítida de noche y soporte muy puntual."</p>
+            <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold text-white">Martha Lucía Gómez</p>
+                <p class="text-[11px] text-slate-400">Administradora • Conjunto Reserva Norte</p>
+              </div>
+              <span class="text-[11px] text-emerald-400 font-semibold">★★★★★</span>
+            </div>
+          </div>
+
+          <div class="enterprise-card rounded-xl p-5">
+            <p class="text-xs text-slate-300 leading-relaxed">"Tenían razón con la segmentación VLAN y los Access Points Wi-Fi 6. Se acabaron las caídas en salas de juntas en Bogotá."</p>
+            <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold text-white">Andrés Felipe Rojas</p>
+                <p class="text-[11px] text-slate-400">Gerente Operativo • Clínica Dental Nova</p>
+              </div>
+              <span class="text-[11px] text-emerald-400 font-semibold">★★★★★</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 2: SERVICIOS Y PRECIOS (COP) ==================== -->
+    <section id="view-servicios" class="hidden view-animate space-y-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Tarifas Reales de Mercado • Colombia (COP)</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Catálogo de Servicios Técnicos</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Todos los paquetes incluyen equipos originales, cableado certificado, mano de obra y traslado gratis en Chía, Cajicá y Bogotá.</p>
+        </div>
+
+        <!-- Filtros por Categoría -->
+        <div class="flex flex-wrap items-center gap-1.5" id="category-filters">
+          <button onclick="filterCategory('Todos')" data-cat="Todos" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500 text-slate-950 transition">Todos</button>
+          <button onclick="filterCategory('Cableado')" data-cat="Cableado" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#0C1220] border border-slate-800 text-slate-300 hover:text-white transition">Cableado</button>
+          <button onclick="filterCategory('Fibra Óptica')" data-cat="Fibra Óptica" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#0C1220] border border-slate-800 text-slate-300 hover:text-white transition">Fibra Óptica</button>
+          <button onclick="filterCategory('Seguridad CCTV')" data-cat="Seguridad CCTV" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#0C1220] border border-slate-800 text-slate-300 hover:text-white transition">Seguridad CCTV</button>
+          <button onclick="filterCategory('Redes Wi-Fi')" data-cat="Redes Wi-Fi" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#0C1220] border border-slate-800 text-slate-300 hover:text-white transition">Redes Wi-Fi</button>
+        </div>
+      </div>
+
+      <!-- Indicador de Filtro Activo -->
+      <div id="active-filter-banner" class="hidden items-center justify-between px-4 py-2.5 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-xs text-cyan-200">
+        <span>Mostrando categoría: <strong id="active-filter-label" class="text-white"></strong></span>
+        <button onclick="filterCategory('Todos')" class="text-cyan-400 hover:underline font-semibold">Mostrar todos los servicios</button>
+      </div>
+
+      <!-- Grid de Servicios -->
+      <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+      <div id="no-services-msg" class="hidden enterprise-card rounded-xl p-10 text-center">
+        <p class="text-slate-300 font-medium">No encontramos servicios que coincidan con tu búsqueda.</p>
+        <button onclick="clearSearch(); filterCategory('Todos');" class="mt-3 px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 text-xs font-semibold">Restablecer filtros</button>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 3: PLANES MENSUALES ==================== -->
+    <section id="view-planes" class="hidden view-animate space-y-8">
+      <div>
+        <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Soporte Preventivo y Correctivo • COP</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Planes Mensuales de Mantenimiento TI</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">Cobertura mensual real con desplazamiento sin costo en Chía, Cajicá, Sopó y Bogotá D.C.</p>
+      </div>
+
+      <div id="plans-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
+
+      <!-- Tabla Comparativa Lado a Lado -->
+      <div class="enterprise-card rounded-2xl p-6 overflow-x-auto scroll-reveal">
+        <h3 class="text-base font-bold text-white mb-4">Comparativa Rápida de Cobertura SLA</h3>
+        <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[600px]">
+          <thead>
+            <tr class="border-b border-slate-800 text-slate-400">
+              <th class="py-3 px-3 font-semibold">Característica Técnica</th>
+              <th class="py-3 px-3 font-semibold text-white">PyME Esencial</th>
+              <th class="py-3 px-3 font-semibold text-cyan-400">Corporativo Pro</th>
+              <th class="py-3 px-3 font-semibold text-emerald-400">Enterprise 24/7</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800/70 text-slate-300">
+            <tr>
+              <td class="py-3 px-3 font-medium">Puntos de red cubiertos</td>
+              <td class="py-3 px-3">Hasta 15 puntos</td>
+              <td class="py-3 px-3 text-white font-semibold">Hasta 45 puntos</td>
+              <td class="py-3 px-3">Ilimitados (Multi-sede)</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium">Cámaras CCTV y NVR</td>
+              <td class="py-3 px-3">Hasta 6 cámaras</td>
+              <td class="py-3 px-3 text-white font-semibold">Hasta 16 cámaras</td>
+              <td class="py-3 px-3">Hasta 64 cámaras</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium">Tiempo de respuesta en sitio</td>
+              <td class="py-3 px-3">&lt; 24 horas hábiles</td>
+              <td class="py-3 px-3 text-cyan-300 font-semibold">&lt; 4 horas</td>
+              <td class="py-3 px-3 text-emerald-300 font-semibold">&lt; 2 horas (24/7)</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium">Visitas preventivas incluidas</td>
+              <td class="py-3 px-3">1 visita bimestral</td>
+              <td class="py-3 px-3 text-white font-semibold">1 visita mensual</td>
+              <td class="py-3 px-3">2 visitas mensuales + auditoría</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-3 font-medium">Desplazamiento Sabana / Bogotá</td>
+              <td class="py-3 px-3 text-emerald-400">✓ Incluido ($0)</td>
+              <td class="py-3 px-3 text-emerald-400">✓ Incluido ($0)</td>
+              <td class="py-3 px-3 text-emerald-400">✓ Incluido 24/7 ($0)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 4: COTIZADOR & COBERTURA ==================== -->
+    <section id="view-cotizador" class="hidden view-animate space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <span class="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Presupuesto Realista en COP • Materiales + Mano de Obra</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Calculadora de Proyecto y Viáticos por Localidad</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Tarifas calculadas con materiales certificados y mano de obra especializada. 10% de descuento desde $5.000.000 COP.</p>
+        </div>
+        <button onclick="resetCalculatorToZero()" class="self-start sm:self-auto px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition">
+          ↺ Reiniciar a 0
+        </button>
+      </div>
+
+      <!-- Guía de uso en 3 pasos -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div class="p-3.5 rounded-xl bg-[#0C1220] border border-slate-800/90 flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center shrink-0">1</span>
+          <p class="text-slate-300"><strong class="text-white">Elige tu localidad:</strong> Verifica si tu municipio tiene traslado gratuito ($0) o tarifa de transporte.</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-[#0C1220] border border-slate-800/90 flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center shrink-0">2</span>
+          <p class="text-slate-300"><strong class="text-white">Ajusta cantidades:</strong> Mueve las barras de puntos de red, cámaras, fibra o Wi-Fi 6.</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-[#0C1220] border border-slate-800/90 flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center shrink-0">3</span>
+          <p class="text-slate-300"><strong class="text-white">Descarga o agenda:</strong> Genera tu cotización formal en PDF o envíala a ingeniería.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Controles Izquierda -->
+        <div class="lg:col-span-7 enterprise-card scroll-reveal rounded-2xl p-6 space-y-6">
+          <!-- Selector de Zona / Ciudad -->
+          <div class="pb-5 border-b border-slate-800">
+            <label for="calc-zone" class="block text-xs font-bold uppercase tracking-wider text-cyan-400 mb-2">
+              Localidad / Municipio de Ejecución y Viáticos
+            </label>
+            <select id="calc-zone" onchange="updateCalculator()" class="w-full bg-[#05080F] border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+              <option value="0" data-desc="Sede principal en Chía: desplazamiento y visita técnica 100% gratuitos ($0).">Chía, Cajicá y Tabio ($0 - Traslado Gratis)</option>
+              <option value="0" data-desc="Cobertura directa corredor norte y Bogotá D.C. sin recargo de transporte ($0).">Bogotá D.C. Norte / Centro / Occidente ($0 - Traslado Gratis)</option>
+              <option value="55000" data-desc="Transporte ida y regreso para cuadrilla técnica y herramienta en Sabana Occidente.">Cota, Tenjo, Funza, Mosquera o Madrid (+$55.000 COP)</option>
+              <option value="75000" data-desc="Desplazamiento inter-municipal Sabana Norte para cuadrilla y certificador.">Sopó, Tocancipá, Briceño o Zipaquirá (+$75.000 COP)</option>
+              <option value="110000" data-desc="Transporte especial por peajes y distancia hacia el sur o salida de Bogotá.">Soacha, Sibaté o La Calera (+$110.000 COP)</option>
+              <option value="220000" data-desc="Viáticos base por jornada técnica fuera de la Sabana de Bogotá.">Otras ciudades de Cundinamarca / Boyacá (+$220.000 COP)</option>
+            </select>
+            <p id="zone-description" class="text-[11px] text-slate-400 mt-1.5"></p>
+          </div>
+
+          <!-- Slider 1: Puntos Cat 6/6A ($185.000 COP c/u) -->
+          <div>
+            <div class="flex justify-between text-sm font-semibold mb-1">
+              <span class="text-white">Puntos de Red Cat 6 / 6A ($185.000 c/u)</span>
+              <span id="val-cat6" class="text-cyan-400 font-bold">8 pts</span>
+            </div>
+            <input id="calc-cat6" type="range" min="0" max="60" value="8" oninput="updateCalculator()" class="w-full" />
+            <p class="text-[11px] text-slate-400 mt-1">Incluye cable UTP 100% cobre (hasta 35m/pto), jack RJ45, faceplate, ponchado y certificación Fluke.</p>
+          </div>
+
+          <!-- Slider 2: Cámaras CCTV ($365.000 COP c/u) -->
+          <div>
+            <div class="flex justify-between text-sm font-semibold mb-1">
+              <span class="text-white">Cámaras CCTV IP 4MP / Full HD ($365.000 c/u)</span>
+              <span id="val-cctv" class="text-cyan-400 font-bold">4 cáms</span>
+            </div>
+            <input id="calc-cctv" type="range" min="0" max="32" value="4" oninput="updateCalculator()" class="w-full" />
+            <p class="text-[11px] text-slate-400 mt-1">Incluye cámara IP/HD metálica, caja estanca, fuente/PoE, cableado UTP exterior y app móvil.</p>
+          </div>
+
+          <!-- Slider 3: Fusiones Fibra ($160.000 COP c/u) -->
+          <div>
+            <div class="flex justify-between text-sm font-semibold mb-1">
+              <span class="text-white">Fusiones de Fibra Óptica ($160.000 c/u)</span>
+              <span id="val-fiber" class="text-cyan-400 font-bold">2 fusiones</span>
+            </div>
+            <input id="calc-fiber" type="range" min="0" max="24" value="2" oninput="updateCalculator()" class="w-full" />
+            <p class="text-[11px] text-slate-400 mt-1">Empalme por fusión de arco eléctrico, pigtail LC/SC, manga protectora y prueba de potencia.</p>
+          </div>
+
+          <!-- Slider 4: Access Points Wi-Fi 6 ($460.000 COP c/u) -->
+          <div>
+            <div class="flex justify-between text-sm font-semibold mb-1">
+              <span class="text-white">Access Points Wi-Fi 6 Empresarial ($460.000 c/u)</span>
+              <span id="val-wifi" class="text-cyan-400 font-bold">2 APs</span>
+            </div>
+            <input id="calc-wifi" type="range" min="0" max="15" value="2" oninput="updateCalculator()" class="w-full" />
+            <p class="text-[11px] text-slate-400 mt-1">Equipo AP Wi-Fi 6 (UniFi / Omada), inyector PoE+, montaje en techo y VLAN corporativa + invitados.</p>
+          </div>
+
+          <!-- Slider 5: Visitas / Peinado Rack ($240.000 COP c/u) -->
+          <div>
+            <div class="flex justify-between text-sm font-semibold mb-1">
+              <span class="text-white">Visitas de Diagnóstico / Peinado Rack ($240.000 c/u)</span>
+              <span id="val-visits" class="text-cyan-400 font-bold">1 visita</span>
+            </div>
+            <input id="calc-visits" type="range" min="0" max="10" value="1" oninput="updateCalculator()" class="w-full" />
+            <p class="text-[11px] text-slate-400 mt-1">Organización de gabinete, marquilla térmica de cables, ordenadores horizontales y testeo.</p>
+          </div>
+        </div>
+
+        <!-- Resumen Financiero Derecha -->
+        <div class="lg:col-span-5 enterprise-card scroll-reveal rounded-2xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <h3 class="text-base font-bold text-white">Desglose Estimado</h3>
+              <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-300">Pesos COP</span>
+            </div>
+
+            <ul id="calc-breakdown" class="mt-4 space-y-2.5 text-xs text-slate-300"></ul>
+
+            <div id="calc-discount-badge" class="hidden mt-4 p-2.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold text-center"></div>
+
+            <!-- Cronograma Estimado de Ejecución -->
+            <div class="mt-5 p-3.5 rounded-xl bg-[#05080F] border border-slate-800/90 grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <span class="text-slate-400 block text-[11px]">Tiempo Estimado Obra</span>
+                <strong id="calc-est-days" class="text-white font-bold mt-0.5 block">2 días hábiles</strong>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[11px]">Cuadrilla Asignada</span>
+                <strong id="calc-est-crew" class="text-cyan-300 font-bold mt-0.5 block">2 técnicos certificados</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-5 border-t border-slate-800">
+            <div class="flex items-baseline justify-between mb-4">
+              <span class="text-xs text-slate-400 uppercase font-semibold">Total Proyecto</span>
+              <span id="calc-total" class="text-2xl sm:text-3xl font-extrabold text-white">$0</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <button onclick="openQuotePdfFromCalculator()" class="py-2.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5">
+                📄 Cotización PDF
+              </button>
+              <button onclick="sendCalculatorToForm()" class="py-2.5 px-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold transition">
+                Solicitar este Proyecto →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 5: RASTREO DE ORDEN & CASOS DE ÉXITO ==================== -->
+    <section id="view-diagnostico" class="hidden view-animate space-y-6">
+      <div>
+        <span class="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Seguimiento y Resultados Comprobados</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Rastreo de Órdenes y Casos de Éxito</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">Consulta en vivo el avance de tu cuadrilla técnica y revisa transformaciones reales ejecutadas en empresas y conjuntos.</p>
+      </div>
+
+      <!-- Módulo: Rastreo de Orden Técnica -->
+      <div class="enterprise-card scroll-reveal rounded-2xl p-6 space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h3 class="text-base font-bold text-white">Rastreo de Orden / Ticket Técnico</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Consulta el avance en tiempo real de tu instalación o certificación Fluke.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-400">
+            <span>Órdenes de prueba:</span>
+            <button onclick="quickTrack('NT-2026-084')" class="px-2.5 py-1 rounded bg-slate-800/80 hover:text-cyan-300 transition">NT-2026-084</button>
+            <button onclick="quickTrack('NT-2026-112')" class="px-2.5 py-1 rounded bg-slate-800/80 hover:text-cyan-300 transition">NT-2026-112</button>
+            <button onclick="quickTrack('NT-2026-149')" class="px-2.5 py-1 rounded bg-slate-800/80 hover:text-cyan-300 transition">NT-2026-149</button>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-2.5">
+          <input id="ticket-input" type="text" placeholder="Ingresa tu código de orden (Ej: NT-2026-084)" class="flex-1 bg-[#05080F] border border-slate-700 rounded-lg px-4 py-2.5 text-xs sm:text-sm text-white uppercase focus:outline-none focus:border-cyan-500" />
+          <button onclick="trackServiceTicket()" class="px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs sm:text-sm font-bold transition">
+            Consultar Estado
+          </button>
+        </div>
+
+        <div id="ticket-result" class="p-4 rounded-xl bg-[#05080F] border border-slate-800 text-xs text-slate-300">
+          Ingresa tu código de orden para ver el estado de instalación y entrega de informes.
+        </div>
+      </div>
+
+      <!-- Casos de Éxito Antes y Después -->
+      <div class="enterprise-card scroll-reveal rounded-2xl p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <h3 class="text-base font-bold text-white">Casos de Éxito: Antes y Después</h3>
+            <p class="text-xs text-slate-400">Resultados documentados en clientes corporativos de Bogotá y Sabana Centro.</p>
+          </div>
+          <div class="flex gap-1.5">
+            <button onclick="selectCaseStudy(0)" class="case-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500 text-slate-950">Rack 24U</button>
+            <button onclick="selectCaseStudy(1)" class="case-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#05080F] border border-slate-800 text-slate-300">Fibra Bodega</button>
+            <button onclick="selectCaseStudy(2)" class="case-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#05080F] border border-slate-800 text-slate-300">CCTV Conjunto</button>
+          </div>
+        </div>
+        <div id="case-study-display" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 7: FAVORITOS SEPARADOS ==================== -->
+    <section id="view-favoritos" class="hidden view-animate space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-semibold text-rose-400 uppercase tracking-wider">Selección Guardada</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Mis Servicios y Planes Favoritos</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Compara tus paquetes seleccionados, descarga una cotización en PDF o envíalos directo a ingeniería.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="openQuotePdfFromFavorites()" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-white transition">
+            📄 PDF Favoritos
+          </button>
+          <button onclick="requestFavoritesQuote()" class="px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold transition">
+            Solicitar Todo →
+          </button>
+        </div>
+      </div>
+
+      <div id="favorites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+      <div id="empty-favorites-msg" class="enterprise-card rounded-2xl p-12 text-center space-y-3">
+        <p class="text-base font-bold text-white">Aún no tienes servicios en favoritos</p>
+        <p class="text-xs text-slate-400 max-w-md mx-auto">Haz clic en el corazón de cualquier servicio o plan de mantenimiento para guardarlo aquí y cotizarlo en conjunto.</p>
+        <button onclick="switchMainTab('servicios')" class="mt-2 px-5 py-2.5 rounded-lg bg-cyan-500 text-slate-950 text-xs font-bold">Explorar Catálogo</button>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 8: AGENDAR VISITA / CONTACTO ==================== -->
+    <section id="view-contacto" class="hidden view-animate">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 space-y-5">
+          <div class="enterprise-card rounded-2xl p-6 space-y-4">
+            <span class="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Ingeniería en Sitio</span>
+            <h2 class="text-2xl font-bold text-white">Agenda una Visita Técnica o Cotización</h2>
+            <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Un ingeniero especialista evaluará tus planos, ductería o requerimientos de seguridad para entregarte una propuesta cerrada sin sobrecostos.
+            </p>
+
+            <div class="space-y-3 pt-3 border-t border-slate-800 text-xs text-slate-300">
+              <p><strong class="text-white block">Sede Operativa:</strong> Chía, Cundinamarca & Bogotá D.C.</p>
+              <p><strong class="text-white block">Horario Atención:</strong> Lunes a Sábado • 7:30 a.m. – 6:30 p.m.</p>
+              <p><strong class="text-white block">Correo Ingeniería:</strong> proyectos@netcoretelecom.co</p>
+            </div>
+          </div>
+
+          <div class="enterprise-card rounded-2xl p-5 border-rose-500/30 bg-rose-950/15 space-y-2.5">
+            <h3 class="text-sm font-bold text-rose-400">¿Emergencia Crítica de Red 24/7?</h3>
+            <p class="text-xs text-slate-300">Si tu empresa sufrió caída de enlace principal, daño en rack o corte de fibra óptica, contáctanos directo por WhatsApp prioritario.</p>
+            <button onclick="openEmergencyWhatsApp()" class="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition">
+              Activar Soporte Urgente
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 enterprise-card rounded-2xl p-6 sm:p-8">
+          <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+            <input type="hidden" name="subject" value="Nueva Solicitud Técnica - NetCore Telecom & Redes" />
+            <input type="hidden" name="from_name" value="Portal Web NetCore Telecom" />
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nombre Completo *</label>
+                <input id="lead-name" name="name" required type="text" placeholder="Ej: Juan Sebastián Pérez" class="w-full bg-[#05080F] border border-slate-700 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Empresa / Conjunto *</label>
+                <input id="lead-company" name="company" required type="text" placeholder="Ej: Industrias Andes S.A.S" class="w-full bg-[#05080F] border border-slate-700 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Teléfono / WhatsApp *</label>
+                <input id="lead-phone" name="phone" required type="tel" placeholder="Ej: 310 555 0194" class="w-full bg-[#05080F] border border-slate-700 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Correo Electrónico (Opcional)</label>
+                <input id="lead-email" name="email" type="email" placeholder="Ej: compras@empresa.com.co" class="w-full bg-[#05080F] border border-slate-700 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Servicio o Plan de Interés</label>
+              <select id="lead-service" name="service" class="w-full bg-[#05080F] border border-slate-700 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500">
+                <option value="Cotización Personalizada / Favoritos">Cotización Personalizada / Favoritos</option>
+                <option value="Pack 8 Puntos Cableado Cat 6/6A">Pack 8 Puntos Cableado Cat 6/6A ($1.680.000)</option>
+                <option value="Enlace Fibra Óptica + Certificación OTDR">Enlace Fibra Óptica + Certificación OTDR ($1.280.000)</option>
+                <option value="Kit CCTV 4 Cámaras IP 4MP + NVR">Kit CCTV 4 Cámaras IP 4MP + NVR ($1.590.000)</option>
+                <option value="Kit CCTV 8 Cámaras IP 4MP + NVR 2TB">Kit CCTV 8 Cámaras IP 4MP + NVR 2TB ($2.980.000)</option>
+                <option value="Cobertura Wi-Fi 6 Empresarial (3 APs)">Cobertura Wi-Fi 6 Empresarial 3 APs ($1.490.000)</option>
+                <option value="Organización y Peinado de Rack 24U">Organización y Peinado de Rack 24U ($640.000)</option>
+                <option value="Plan PyME Esencial">Plan Mensual PyME Esencial ($420.000/mes)</option>
+                <option value="Plan Corporativo Pro">Plan Mensual Corporativo Pro ($950.000/mes)</option>
+                <option value="Plan Enterprise 24/7">Plan Mensual Enterprise 24/7 ($2.150.000/mes)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Detalles Técnicos del Proyecto *</label>
+              <textarea id="lead-details" name="message" required rows="4" placeholder="Cuéntanos cantidad aproximada de puestos, cámaras, pisos o municipio..." class="w-full bg-[#05080F] border border-slate-700 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500"></textarea>
+            </div>
+
+            <button id="lead-submit-btn" type="submit" class="w-full py-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm transition flex items-center justify-center gap-2">
+              <span>Enviar Solicitud a Ingeniería</span>
+            </button>
+          </form>
+
+          <div id="contact-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs leading-relaxed space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <strong class="text-sm text-white">✓ Solicitud Radicada Exitosamente</strong>
+              <span id="lead-radicado-code" class="px-2.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 font-mono font-bold">RAD-2026-0000</span>
+            </div>
+            <p id="lead-sync-status">Tu requerimiento quedó registrado en la base de datos de ingeniería. Un especialista te contactará en menos de 2 horas hábiles.</p>
+            <div class="pt-1 flex flex-wrap gap-2">
+              <button type="button" onclick="sendLastLeadToWhatsApp()" class="px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition">
+                Respaldar también por WhatsApp →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== WORKSPACE FULLSCREEN ESTILO CHAT IA PROFESIONAL ==================== -->
+  <section id="view-asesor-ia" class="hidden fixed inset-0 z-50 bg-[#05080F] flex overflow-hidden">
+    <!-- Overlay móvil para sidebar de chats -->
+    <div id="ai-sidebar-overlay" onclick="toggleAiSidebarMobile()" class="fixed inset-0 bg-black/70 z-20 hidden lg:hidden"></div>
+
+    <!-- Barra Lateral Izquierda (Historial + Renombrar Chats) -->
+    <aside id="ai-sidebar" class="fixed lg:static inset-y-0 left-0 z-30 w-72 bg-[#080D18] border-r border-slate-800/90 flex flex-col justify-between transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
+      <div class="p-3.5 flex flex-col flex-1 min-h-0">
+        <div class="flex items-center gap-2">
+          <button onclick="createNewAiSession()" class="flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition shadow-xs">
+            <span>+ Nuevo chat</span>
+          </button>
+          <button onclick="toggleAiSidebarMobile()" class="lg:hidden p-2.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white text-xs">
+            ✕
+          </button>
+        </div>
+
+        <div class="mt-4 mb-2 px-2 flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Tus conversaciones</span>
+          <button onclick="clearAllAiHistory()" class="text-[11px] text-slate-500 hover:text-rose-400 transition">Borrar todo</button>
+        </div>
+
+        <div id="ai-history-list" class="flex-1 overflow-y-auto space-y-1 pr-1"></div>
+      </div>
+
+      <div class="p-3.5 border-t border-slate-800/90 space-y-2">
+        <button onclick="exitAiWorkspace()" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-[#0C1220] hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-200 transition">
+          <span>← Volver al sitio web</span>
+          <span class="text-cyan-400">NetCore</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Columna Principal del Chat -->
+    <div class="flex-1 flex flex-col min-w-0 bg-[#05080F]">
+      <header class="h-14 px-4 sm:px-6 border-b border-slate-800/80 flex items-center justify-between gap-3 bg-[#05080F]/95 backdrop-blur-md shrink-0">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <button onclick="toggleAiSidebarMobile()" aria-label="Historial de chats" class="lg:hidden p-2 rounded-lg bg-[#0C1220] border border-slate-800 text-slate-300 hover:text-white">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10" />
+            </svg>
+          </button>
+
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+            <h2 id="ai-active-chat-title" class="text-sm font-bold text-white truncate">Ingeniero Consultor NetCore</h2>
+            <button onclick="renameActiveAiSession()" title="Cambiar nombre de este chat" class="p-1 rounded-md text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="flex items-center bg-[#0C1220] p-0.5 rounded-lg border border-slate-800 text-[11px] sm:text-xs">
+            <button id="ai-mode-quote" onclick="setAiMode('quote')" class="px-2.5 py-1 rounded-md bg-cyan-500 text-slate-950 font-semibold transition">
+              Cotizar
+            </button>
+            <button id="ai-mode-troubleshoot" onclick="setAiMode('troubleshoot')" class="px-2.5 py-1 rounded-md text-slate-300 hover:text-white transition">
+              Diagnóstico
+            </button>
+          </div>
+          <button onclick="exitAiWorkspace()" class="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#0C1220] hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-200 hover:text-white transition">
+            <span>✕</span>
+            <span class="hidden sm:inline">Salir</span>
+            <span class="sm:hidden">Web</span>
+          </button>
+        </div>
+      </header>
+
+      <div id="ai-chat-scroll-area" class="flex-1 overflow-y-auto px-4 sm:px-6 py-6">
+        <div id="ai-chat-messages" class="max-w-3xl mx-auto space-y-6"></div>
+      </div>
+
+      <div class="px-4 sm:px-6 pb-4 pt-2 bg-gradient-to-t from-[#05080F] via-[#05080F] to-transparent shrink-0">
+        <div class="max-w-3xl mx-auto space-y-2.5">
+          <div id="ai-quick-prompts" class="flex items-center gap-2 overflow-x-auto no-scrollbar text-xs"></div>
+
+          <form onsubmit="handleAiSubmit(event)" class="relative flex items-end gap-2 bg-[#0C1220] border border-slate-700/90 focus-within:border-cyan-500/70 rounded-2xl p-2 shadow-xl">
+            <textarea
+              id="ai-user-input"
+              rows="1"
+              onkeydown="handleAiInputKeydown(event)"
+              oninput="autoResizeAiTextarea(this)"
+              placeholder="Pregunta al Ingeniero IA sobre cámaras, puntos Cat 6A, fibra o fallas de red..."
+              class="flex-1 bg-transparent px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none resize-none max-h-36 leading-relaxed"
+            ></textarea>
+            <button id="ai-send-btn" type="submit" aria-label="Enviar mensaje" class="p-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold transition shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+          </form>
+          <p class="text-center text-[10px] text-slate-500">Asesor Técnico Virtual NetCore Telecom • Precios orientativos en COP</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL FICHA TÉCNICA AMPLIADA DE SERVICIO / PLAN -->
+  <div id="spec-detail-modal" onclick="if(event.target === this) closeSpecModal()" class="fixed inset-0 bg-black/80 backdrop-blur-xs z-50 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="enterprise-card rounded-2xl max-w-2xl w-full p-6 sm:p-7 shadow-2xl my-8 border border-slate-700/90">
+      <div id="spec-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- MODAL COTIZACIÓN FORMAL PDF -->
+  <div id="pdf-quote-modal" class="fixed inset-0 bg-black/80 backdrop-blur-xs z-50 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white text-slate-900 rounded-2xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl my-8">
+      <div id="pdf-quote-actions" class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-4 border-b border-slate-200">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Documento Comercial • Descarga Directa</span>
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="download-real-pdf-btn" onclick="downloadRealPdfFile()" class="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs">
+            <span>⬇️ Descargar Archivo PDF</span>
+          </button>
+          <button onclick="copyQuoteTextToClipboard()" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition">
+            📋 Copiar Texto
+          </button>
+          <button onclick="closePdfModal()" class="px-3 py-2 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold">
+            Cerrar ✕
+          </button>
+        </div>
+      </div>
+      <div id="pdf-quote-printable" class="bg-white p-2 sm:p-4"></div>
+    </div>
+  </div>
+
+  <!-- BOTÓN FLOTANTE DE ASESOR IA (BURBUJA ÚNICA) -->
+  <button
+    id="floating-ai-btn"
+    onclick="switchMainTab('asesor-ia')"
+    aria-label="Abrir Asesor IA"
+    class="fixed bottom-20 right-5 z-40 flex items-center gap-2 px-4 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-950/60 transition transform hover:scale-105"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+      <path d="M12 2a4 4 0 0 1 4 4v2h1a3 3 0 0 1 3 3v5a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-5a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4z"/>
+      <circle cx="9.5" cy="13.5" r="1"/><circle cx="14.5" cy="13.5" r="1"/>
+    </svg>
+    <span>Asesor IA</span>
+  </button>
+
+  <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+  <button
+    id="floating-whatsapp-btn"
+    onclick="openWhatsAppWithContext()"
+    aria-label="Contactar por WhatsApp"
+    class="fixed bottom-5 right-5 z-40 flex items-center gap-2 px-4 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-lg shadow-emerald-950/50 transition transform hover:scale-105"
+  >
+    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.5 0 .16 5.34.16 11.9c0 2.1.55 4.15 1.6 5.96L0 24l6.32-1.66a11.86 11.86 0 0 0 5.74 1.46h.01c6.56 0 11.9-5.34 11.9-11.9 0-3.18-1.24-6.17-3.45-8.42zM12.07 21.8h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.75.98 1-3.65-.24-.38a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.13 1.03 7 2.9a9.83 9.83 0 0 1 2.89 7c0 5.46-4.44 9.89-9.89 9.89z"/>
+    </svg>
+    <span>WhatsApp</span>
+  </button>
+
+  <!-- NOTIFICACIÓN TOAST -->
+  <div id="toast-container" class="fixed bottom-5 left-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- FOOTER CORPORATIVO -->
+  <footer id="main-site-footer" class="border-t border-slate-800/80 bg-[#05080F] mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      <p>© 2026 <strong class="text-slate-200">NetCore Telecom & Redes S.A.S</strong> • NIT 901.482.319-4 • Chía & Bogotá D.C.</p>
+      <div class="flex items-center gap-4">
+        <button onclick="switchMainTab('servicios')" class="hover:text-cyan-400 transition">Servicios</button>
+        <button onclick="switchMainTab('planes')" class="hover:text-cyan-400 transition">Planes SLA</button>
+        <button onclick="switchMainTab('cotizador')" class="hover:text-cyan-400 transition">Cotizador COP</button>
+        <button onclick="switchMainTab('contacto')" class="hover:text-cyan-400 transition">Contacto</button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 1. CATÁLOGO DE SERVICIOS Y PLANES CON PRECIOS REALES DEL MERCADO COLOMBIANO (COP)
+    const SERVICES_DATA = [
+      {
+        id: 'srv-cat6-8',
+        category: 'Cableado',
+        title: 'Pack 8 Puntos Cableado Cat 6 / 6A',
+        price: 1680000,
+        unit: 'Paquete 8 puntos',
+        badge: 'Más Solicitado',
+        summary: 'Instalación completa de 8 puntos de red certificados con analizador Fluke Networks.',
+        deliverables: [
+          'Cable UTP Cat 6/6A 100% cobre certificado (hasta 35m/pto)',
+          'Patch Panel de 24 puertos + organizador horizontal',
+          '8 Faceplates dobles, jacks RJ45 y patch cords',
+          'Certificación digital punto a punto y plano lógico'
+        ],
+        specs: {
+          executionTime: '1 a 2 días hábiles (cuadrilla de 2 técnicos)',
+          normative: 'ANSI/TIA-568.2-D • Canaleta PVC o tubería EMT según entorno',
+          warranty: '15 años en enlace permanente certificado + 12 meses mano de obra',
+          coverage: 'Traslado gratis ($0) en Chía, Cajicá, Tabio y Bogotá D.C.'
+        }
+      },
+      {
+        id: 'srv-fibra-enlace',
+        category: 'Fibra Óptica',
+        title: 'Enlace Fibra Óptica + Certificación OTDR',
+        price: 1280000,
+        unit: 'Hasta 80m + 4 fusiones',
+        badge: '10 Gbps Ready',
+        summary: 'Tendido troncal de fibra óptica monomodo o multimodo entre pisos, racks o bodegas.',
+        deliverables: [
+          'Tendido de hasta 80 metros de fibra óptica armored',
+          '4 fusiones por arco eléctrico y bandeja ODF',
+          'Pigtails, acopladores LC/SC y organización en rack',
+          'Reflectometría OTDR e informe de atenuación dB'
+        ],
+        specs: {
+          executionTime: '1 día hábil en sitio',
+          normative: 'ITU-T G.652.D / OM3-OM4 • Atenuación máxima < 0.15 dB por fusión',
+          warranty: '15 años en empalmes y continuidad óptica',
+          coverage: 'Traslado gratis ($0) en Chía, Cajicá y Bogotá D.C.'
+        }
+      },
+      {
+        id: 'srv-cctv-4',
+        category: 'Seguridad CCTV',
+        title: 'Kit CCTV 4 Cámaras IP 4MP + NVR',
+        price: 1590000,
+        unit: 'Sistema 4 cámaras',
+        badge: 'Visión Nocturna',
+        summary: 'Videovigilancia de alta definición con detección humana y visualización desde celular.',
+        deliverables: [
+          '4 Cámaras Domo/Bala 4MP IP67 exterior/interior',
+          'NVR de 4 canales PoE + Disco Duro 1TB vigilancia',
+          'Cableado UTP exterior, cajas estancas y conectores',
+          'Configuración en App móvil iOS/Android sin mensualidad'
+        ],
+        specs: {
+          executionTime: '1 día hábil (instalación y configuración completa)',
+          normative: 'ONVIF Profile S/G • Compresión H.265+ • IR 30 metros',
+          warranty: '12 meses en cámaras, NVR y disco duro WD Purple',
+          coverage: 'Traslado gratis ($0) en Chía, Cajicá y Bogotá D.C.'
+        }
+      },
+      {
+        id: 'srv-cctv-8',
+        category: 'Seguridad CCTV',
+        title: 'Kit CCTV 8 Cámaras IP 4MP + NVR 2TB',
+        price: 2980000,
+        unit: 'Sistema 8 cámaras',
+        badge: 'Empresas & Conjuntos',
+        summary: 'Cobertura perimetral e interna con grabación continua de 30 días y analítica inteligente.',
+        deliverables: [
+          '8 Cámaras IP 4MP con infrarrojo de 30 metros',
+          'NVR 8 canales PoE + Disco Duro 2TB Western Digital Purple',
+          'Switch PoE dedicado y protección contra sobretensión',
+          'Capacitación de respaldo de evidencia y monitoreo'
+        ],
+        specs: {
+          executionTime: '2 días hábiles (cuadrilla de 2 técnicos)',
+          normative: 'Detección inteligente humanos/vehículos • Protección IP67',
+          warranty: '12 meses en equipos activos y cableado estructurado',
+          coverage: 'Traslado gratis ($0) en Chía, Cajicá y Bogotá D.C.'
+        }
+      },
+      {
+        id: 'srv-wifi6-3ap',
+        category: 'Redes Wi-Fi',
+        title: 'Cobertura Wi-Fi 6 Empresarial (3 APs)',
+        price: 1490000,
+        unit: 'Hasta 150 usuarios',
+        badge: 'Roaming Sin Cortes',
+        summary: 'Elimina zonas muertas de señal con 3 Access Points Wi-Fi 6 administrados en la nube.',
+        deliverables: [
+          '3 Access Points Wi-Fi 6 AX1800/AX3000 techo/pared',
+          'Inyectores PoE+ y cableado de interconexión Cat 6',
+          'Separación de red Corporativa, Invitados e IoT (VLAN)',
+          'Mapa de calor de cobertura y optimización de canales'
+        ],
+        specs: {
+          executionTime: '1 día hábil',
+          normative: 'IEEE 802.11ax (Wi-Fi 6) • Fast Roaming 802.11r/k/v • WPA3',
+          warranty: '12 meses en Access Points UniFi / Omada y configuración',
+          coverage: 'Traslado gratis ($0) en Chía, Cajicá y Bogotá D.C.'
+        }
+      },
+      {
+        id: 'srv-rack-24u',
+        category: 'Cableado',
+        title: 'Organización y Peinado de Rack 24U',
+        price: 640000,
+        unit: 'Por gabinete',
+        badge: 'Orden & Flujo de Aire',
+        summary: 'Reestructuración estética y funcional de gabinetes desordenados sin pérdida de continuidad.',
+        deliverables: [
+          'Desmontaje ordenado en ventana de mantenimiento',
+          'Patch cords slim certificados codificados por color',
+          'Marquillado térmico en ambos extremos de cada cable',
+          'Ordenadores horizontales/verticales y ajuste PDU'
+        ],
+        specs: {
+          executionTime: '1 jornada (4 a 6 horas en horario acordado)',
+          normative: 'ANSI/TIA-606-C (Identificación y etiquetado de telecomunicaciones)',
+          warranty: '12 meses en mano de obra y patch cords instalados',
+          coverage: 'Traslado gratis ($0) en Chía, Cajicá y Bogotá D.C.'
+        }
+      }
+    ];
+
+    const PLANS_DATA = [
+      {
+        id: 'plan-pyme',
+        category: 'Planes',
+        title: 'Plan PyME Esencial',
+        price: 420000,
+        unit: 'COP / mes',
+        badge: 'Oficinas & Locales',
+        summary: 'Mantenimiento preventivo y soporte remoto/presencial para oficinas pequeñas.',
+        deliverables: [
+          'Cobertura hasta 15 puntos de red y 6 cámaras CCTV',
+          '1 visita preventiva bimestral de limpieza y testeo',
+          'Soporte remoto ilimitado y presencial < 24h hábiles',
+          'Revisión de grabación NVR y estado de discos'
+        ],
+        specs: {
+          executionTime: 'Respuesta en sitio menor a 24 horas hábiles',
+          normative: 'Mantenimiento preventivo de gabinetes, NVR y enlaces activos',
+          warranty: 'Sin cláusula de permanencia forzosa • Facturación mensual',
+          coverage: 'Desplazamientos incluidos ($0) en Chía, Cajicá y Bogotá D.C.'
+        }
+      },
+      {
+        id: 'plan-corp',
+        category: 'Planes',
+        title: 'Plan Corporativo Pro',
+        price: 950000,
+        unit: 'COP / mes',
+        badge: 'Recomendado',
+        highlighted: true,
+        summary: 'Continuidad operativa garantizada con respuesta prioritaria y equipos de respaldo.',
+        deliverables: [
+          'Cobertura hasta 45 puntos de red y 16 cámaras CCTV',
+          '1 visita preventiva mensual con informe técnico',
+          'Respuesta presencial prioritaria < 4 horas',
+          'Préstamo de Router o Switch PoE ante falla crítica'
+        ],
+        specs: {
+          executionTime: 'Atención prioritaria en sitio menor a 4 horas',
+          normative: 'Monitoreo de salud de red, backup de configuraciones y VLANs',
+          warranty: 'Equipo backup en préstamo sin costo adicional durante reparación',
+          coverage: 'Desplazamientos incluidos ($0) en Sabana Centro y Bogotá D.C.'
+        }
+      },
+      {
+        id: 'plan-enterprise',
+        category: 'Planes',
+        title: 'Plan Enterprise 24/7',
+        price: 2150000,
+        unit: 'COP / mes',
+        badge: 'Misión Crítica',
+        summary: 'Soporte continuo 24/7 para bodegas logísticas, clínicas y conjuntos residenciales.',
+        deliverables: [
+          'Puntos ilimitados multi-sede y hasta 64 cámaras',
+          '2 visitas preventivas al mes + certificación Fluke anual',
+          'Atención de emergencia 24/7 en menos de 2 horas',
+          'Monitoreo proactivo de enlaces y respaldo inmediato'
+        ],
+        specs: {
+          executionTime: 'Guardia técnica 24/7/365 con llegada < 2 horas',
+          normative: 'Auditoría anual ANSI/TIA-568-D e inventario técnico actualizado',
+          warranty: 'SLA contractual con reemplazo inmediato de hardware crítico',
+          coverage: 'Cobertura total 24/7 en Sabana de Bogotá y Bogotá D.C.'
+        }
+      }
+    ];
+
+    // 2. ESTADO GLOBAL
+    let currentMainTab = 'inicio';
+    let currentCategory = 'Todos';
+    let searchQuery = '';
+    let favorites = JSON.parse(localStorage.getItem('netcore_favorites') || '[]');
+    let lastScrollY = window.scrollY;
+
+    const AI_STORAGE_KEY = 'netcore_ai_sessions_v2';
+    let aiMode = 'quote';
+    let aiSessions = JSON.parse(localStorage.getItem(AI_STORAGE_KEY) || '[]');
+    let activeAiSessionId = null;
+
+    function formatCOP(val) {
+      return '$' + Number(val).toLocaleString('es-CO');
+    }
+
+    function getAllCatalogItems() {
+      return [...SERVICES_DATA, ...PLANS_DATA];
+    }
+
+    // 3. NAVEGACIÓN POR SUB-PESTAÑAS Y MENÚ
+    function switchMainTab(tabId) {
+      currentMainTab = tabId;
+      const isAiFullView = tabId === 'asesor-ia';
+
+      const siteHeader = document.getElementById('main-site-header');
+      const siteMain = document.getElementById('main-site-content');
+      const siteFooter = document.getElementById('main-site-footer');
+      const waBtn = document.getElementById('floating-whatsapp-btn');
+      const aiBubbleBtn = document.getElementById('floating-ai-btn');
+      const aiView = document.getElementById('view-asesor-ia');
+
+      if (isAiFullView) {
+        siteHeader.classList.add('hidden');
+        siteMain.classList.add('hidden');
+        siteFooter.classList.add('hidden');
+        waBtn.classList.add('hidden');
+        if (aiBubbleBtn) aiBubbleBtn.classList.add('hidden');
+        aiView.classList.remove('hidden');
+        ensureActiveAiSession();
+        return;
+      } else {
+        siteHeader.classList.remove('hidden');
+        siteMain.classList.remove('hidden');
+        siteFooter.classList.remove('hidden');
+        waBtn.classList.remove('hidden');
+        if (aiBubbleBtn) aiBubbleBtn.classList.remove('hidden');
+        aiView.classList.add('hidden');
+      }
+
+      const views = ['inicio', 'servicios', 'planes', 'cotizador', 'diagnostico', 'favoritos', 'contacto'];
+      views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (el) {
+          if (v === tabId) {
+            el.classList.remove('hidden');
+            el.classList.remove('view-animate');
+            void el.offsetWidth;
+            el.classList.add('view-animate');
+          } else {
+            el.classList.add('hidden');
+          }
+        }
+      });
+
+      document.querySelectorAll('.subtab-btn').forEach(btn => {
+        if (btn.dataset.tab === tabId) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+
+      if (tabId === 'favoritos') renderFavorites();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(observeScrollElements, 60);
+    }
+
+    function exitAiWorkspace() {
+      switchMainTab('inicio');
+    }
+
+    function toggleAiSidebarMobile() {
+      const sidebar = document.getElementById('ai-sidebar');
+      const overlay = document.getElementById('ai-sidebar-overlay');
+      const isClosed = sidebar.classList.contains('-translate-x-full');
+      if (isClosed) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+
+    function toggleDrawer() {
+      const drawer = document.getElementById('nav-drawer');
+      const overlay = document.getElementById('drawer-overlay');
+      const isClosed = drawer.classList.contains('translate-x-full');
+      if (isClosed) {
+        drawer.classList.remove('translate-x-full');
+        overlay.classList.remove('hidden');
+      } else {
+        drawer.classList.add('translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+
+    // 4. RENDERIZADO DE CATÁLOGO, PLANES Y MODAL FICHA TÉCNICA
+    function renderServices() {
+      const grid = document.getElementById('services-grid');
+      const emptyMsg = document.getElementById('no-services-msg');
+      const filterBanner = document.getElementById('active-filter-banner');
+      const filterLabel = document.getElementById('active-filter-label');
+
+      if (currentCategory !== 'Todos') {
+        filterBanner.classList.remove('hidden');
+        filterBanner.classList.add('flex');
+        filterLabel.textContent = currentCategory;
+      } else {
+        filterBanner.classList.add('hidden');
+        filterBanner.classList.remove('flex');
+      }
+
+      const filtered = SERVICES_DATA.filter(srv => {
+        const matchesCat = currentCategory === 'Todos' || srv.category === currentCategory;
+        const q = searchQuery.toLowerCase();
+        const matchesSearch = !q ||
+          srv.title.toLowerCase().includes(q) ||
+          srv.summary.toLowerCase().includes(q) ||
+          srv.category.toLowerCase().includes(q) ||
+          srv.deliverables.some(d => d.toLowerCase().includes(q));
+        return matchesCat && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyMsg.classList.remove('hidden');
+        return;
+      }
+
+      emptyMsg.classList.add('hidden');
+      grid.innerHTML = filtered.map(srv => createItemCardHTML(srv, false)).join('');
+    }
+
+    function renderPlans() {
+      const grid = document.getElementById('plans-grid');
+      grid.innerHTML = PLANS_DATA.map(plan => createItemCardHTML(plan, true)).join('');
+    }
+
+    function createItemCardHTML(item, isPlan) {
+      const isFav = favorites.includes(item.id);
+      const highlightClass = item.highlighted ? 'border-cyan-500/50 ring-1 ring-cyan-500/20' : '';
+
+      return `
+        <article class="enterprise-card scroll-reveal ${highlightClass} rounded-2xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2">
+              <span class="px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                ${item.badge}
+              </span>
+              <button onclick="toggleFavorite('${item.id}')" aria-label="Guardar en favoritos" class="p-1.5 rounded-lg bg-[#05080F] border border-slate-800 hover:border-rose-500/40 transition">
+                <svg class="w-4 h-4 ${isFav ? 'text-rose-500' : 'text-slate-500'}" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </button>
+            </div>
+
+            <h3 class="text-lg font-bold text-white mt-3">${item.title}</h3>
+            <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">${item.summary}</p>
+
+            <div class="mt-4 pb-4 border-b border-slate-800/80">
+              <span class="text-2xl font-extrabold text-white">${formatCOP(item.price)}</span>
+              <span class="text-xs text-slate-400 ml-1">${item.unit}</span>
+            </div>
+
+            <ul class="mt-4 space-y-2 text-xs text-slate-300">
+              ${item.deliverables.map(d => `
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400 font-bold">✓</span>
+                  <span>${d}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center gap-2">
+            <button onclick="openSpecModal('${item.id}')" class="px-3 py-2 rounded-lg bg-[#05080F] hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 transition">
+              Ficha Técnica
+            </button>
+            <button onclick="requestSpecificItem('${item.id}')" class="flex-1 py-2 px-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold transition">
+              ${isPlan ? 'Contratar Plan →' : 'Solicitar →'}
+            </button>
+          </div>
+        </article>
+      `;
+    }
+
+    function openSpecModal(itemId) {
+      const item = getAllCatalogItems().find(i => i.id === itemId);
+      if (!item) return;
+
+      const modal = document.getElementById('spec-detail-modal');
+      const content = document.getElementById('spec-modal-content');
+      content.innerHTML = `
+        <div class="flex items-start justify-between gap-3 pb-4 border-b border-slate-800">
+          <div>
+            <span class="px-2.5 py-0.5 rounded text-[11px] font-semibold bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">${item.badge}</span>
+            <h3 class="text-xl font-bold text-white mt-2">${item.title}</h3>
+            <p class="text-sm font-extrabold text-cyan-400 mt-1">${formatCOP(item.price)} <span class="text-xs font-normal text-slate-400">(${item.unit})</span></p>
+          </div>
+          <button onclick="closeSpecModal()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold">✕</button>
+        </div>
+
+        <div class="mt-4 space-y-4 text-xs">
+          <p class="text-slate-300 leading-relaxed">${item.summary}</p>
+
+          <div class="p-4 rounded-xl bg-[#05080F] border border-slate-800 space-y-2.5">
+            <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Entregables Incluidos</h4>
+            <ul class="space-y-1.5 text-slate-300">
+              ${item.deliverables.map(d => `<li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span><span>${d}</span></li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3 rounded-xl bg-[#05080F] border border-slate-800">
+              <span class="text-[11px] text-slate-400 block">Tiempo / SLA</span>
+              <strong class="text-white mt-0.5 block">${item.specs.executionTime}</strong>
+            </div>
+            <div class="p-3 rounded-xl bg-[#05080F] border border-slate-800">
+              <span class="text-[11px] text-slate-400 block">Cobertura y Viáticos</span>
+              <strong class="text-emerald-400 mt-0.5 block">${item.specs.coverage}</strong>
+            </div>
+            <div class="p-3 rounded-xl bg-[#05080F] border border-slate-800">
+              <span class="text-[11px] text-slate-400 block">Normativa Técnica</span>
+              <strong class="text-slate-200 mt-0.5 block">${item.specs.normative}</strong>
+            </div>
+            <div class="p-3 rounded-xl bg-[#05080F] border border-slate-800">
+              <span class="text-[11px] text-slate-400 block">Garantía Escrita</span>
+              <strong class="text-cyan-300 mt-0.5 block">${item.specs.warranty}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-end gap-2.5">
+          <button onclick="toggleFavorite('${item.id}'); closeSpecModal();" class="px-4 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition">
+            ${favorites.includes(item.id) ? '♥ Quitar de Favoritos' : '♡ Guardar en Favoritos'}
+          </button>
+          <button onclick="closeSpecModal(); requestSpecificItem('${item.id}');" class="px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold transition">
+            Solicitar este Paquete →
+          </button>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeSpecModal() {
+      const modal = document.getElementById('spec-detail-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.dataset.cat === cat) {
+          btn.className = 'cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500 text-slate-950 transition';
+        } else {
+          btn.className = 'cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#0C1220] border border-slate-800 text-slate-300 hover:text-white transition';
+        }
+      });
+      renderServices();
+    }
+
+    function jumpToCategory(cat) {
+      switchMainTab('servicios');
+      filterCategory(cat);
+    }
+
+    function handleSearch(val) {
+      searchQuery = val.trim();
+      const desktopInput = document.getElementById('global-search');
+      const mobileInput = document.getElementById('mobile-search');
+      const clearBtn = document.getElementById('clear-search-btn');
+
+      if (desktopInput && desktopInput.value !== val) desktopInput.value = val;
+      if (mobileInput && mobileInput.value !== val) mobileInput.value = val;
+
+      if (searchQuery) {
+        clearBtn.classList.remove('hidden');
+        if (currentMainTab !== 'servicios') switchMainTab('servicios');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+      renderServices();
+    }
+
+    function clearSearch() {
+      handleSearch('');
+    }
+
+    // 5. FAVORITOS SEPARADOS
+    function toggleFavorite(itemId) {
+      const idx = favorites.indexOf(itemId);
+      if (idx === -1) {
+        favorites.push(itemId);
+        showToast('Agregado a tus favoritos', 'success');
+      } else {
+        favorites.splice(idx, 1);
+        showToast('Eliminado de favoritos', 'info');
+      }
+      localStorage.setItem('netcore_favorites', JSON.stringify(favorites));
+      updateFavBadges();
+      renderServices();
+      renderPlans();
+      if (currentMainTab === 'favoritos') renderFavorites();
+    }
+
+    function updateFavBadges() {
+      const count = favorites.length;
+      document.getElementById('fav-badge').textContent = count;
+      const drawerCount = document.getElementById('drawer-fav-count');
+      if (drawerCount) drawerCount.textContent = count;
+    }
+
+    function renderFavorites() {
+      const grid = document.getElementById('favorites-grid');
+      const empty = document.getElementById('empty-favorites-msg');
+      const saved = getAllCatalogItems().filter(i => favorites.includes(i.id));
+
+      if (saved.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+
+      empty.classList.add('hidden');
+      grid.innerHTML = saved.map(item => createItemCardHTML(item, item.category === 'Planes')).join('');
+      setTimeout(observeScrollElements, 40);
+    }
+
+    function requestSpecificItem(itemId) {
+      const item = getAllCatalogItems().find(i => i.id === itemId);
+      switchMainTab('contacto');
+      const select = document.getElementById('lead-service');
+      for (let i = 0; i < select.options.length; i++) {
+        if (select.options[i].value.toLowerCase().includes(item.title.toLowerCase().slice(0, 14))) {
+          select.selectedIndex = i;
+          break;
+        }
+      }
+      document.getElementById('lead-details').value = `Estoy interesado en: ${item.title} (${formatCOP(item.price)} COP). Solicito información de disponibilidad e instalación.`;
+    }
+
+    function requestFavoritesQuote() {
+      const saved = getAllCatalogItems().filter(i => favorites.includes(i.id));
+      if (saved.length === 0) {
+        showToast('No tienes favoritos guardados', 'info');
+        return;
+      }
+      switchMainTab('contacto');
+      document.getElementById('lead-service').value = 'Cotización Personalizada / Favoritos';
+      const total = saved.reduce((s, i) => s + i.price, 0);
+      document.getElementById('lead-details').value =
+        `Solicito cotización formal para los siguientes servicios guardados (${formatCOP(total)} COP aprox.):\n` +
+        saved.map(s => `• ${s.title} - ${formatCOP(s.price)}`).join('\n');
+    }
+
+    // 6. CALCULADORA INTERACTIVA COP CON TARIFAS REALES POR LOCALIDAD
+    function updateCalculator() {
+      const cat6 = parseInt(document.getElementById('calc-cat6').value, 10);
+      const cctv = parseInt(document.getElementById('calc-cctv').value, 10);
+      const fiber = parseInt(document.getElementById('calc-fiber').value, 10);
+      const wifi = parseInt(document.getElementById('calc-wifi').value, 10);
+      const visits = parseInt(document.getElementById('calc-visits').value, 10);
+
+      const zoneSelect = document.getElementById('calc-zone');
+      const travelFee = parseInt(zoneSelect.value, 10);
+      const selectedOption = zoneSelect.options[zoneSelect.selectedIndex];
+      document.getElementById('zone-description').textContent = selectedOption.dataset.desc || '';
+
+      document.getElementById('val-cat6').textContent = `${cat6} pts`;
+      document.getElementById('val-cctv').textContent = `${cctv} cáms`;
+      document.getElementById('val-fiber').textContent = `${fiber} fusiones`;
+      document.getElementById('val-wifi').textContent = `${wifi} APs`;
+      document.getElementById('val-visits').textContent = `${visits} ${visits === 1 ? 'visita' : 'visitas'}`;
+
+      const subtotal = (cat6 * 185000) + (cctv * 365000) + (fiber * 160000) + (wifi * 460000) + (visits * 240000);
+      const discount = subtotal >= 5000000 ? Math.round(subtotal * 0.10) : 0;
+      const total = subtotal - discount + travelFee;
+
+      const breakdown = document.getElementById('calc-breakdown');
+      const items = [];
+      if (cat6 > 0) items.push(`<li class="flex justify-between"><span>${cat6} × Puntos Cat 6/6A</span><strong class="text-white">${formatCOP(cat6 * 185000)}</strong></li>`);
+      if (cctv > 0) items.push(`<li class="flex justify-between"><span>${cctv} × Cámaras CCTV IP 4MP</span><strong class="text-white">${formatCOP(cctv * 365000)}</strong></li>`);
+      if (fiber > 0) items.push(`<li class="flex justify-between"><span>${fiber} × Fusiones Fibra Óptica</span><strong class="text-white">${formatCOP(fiber * 160000)}</strong></li>`);
+      if (wifi > 0) items.push(`<li class="flex justify-between"><span>${wifi} × Access Points Wi-Fi 6</span><strong class="text-white">${formatCOP(wifi * 460000)}</strong></li>`);
+      if (visits > 0) items.push(`<li class="flex justify-between"><span>${visits} × Visitas / Peinado Rack</span><strong class="text-white">${formatCOP(visits * 240000)}</strong></li>`);
+      items.push(`<li class="flex justify-between pt-2 border-t border-slate-800/80"><span class="text-slate-400">Traslado / Viáticos Localidad</span><strong class="text-cyan-400">${travelFee === 0 ? '$0 (Gratis en zona)' : '+' + formatCOP(travelFee)}</strong></li>`);
+
+      breakdown.innerHTML = items.length > 1
+        ? items.join('')
+        : '<li class="text-slate-500 italic">Mueve los deslizadores para calcular tu proyecto.</li>';
+
+      const discountBadge = document.getElementById('calc-discount-badge');
+      if (discount > 0) {
+        discountBadge.classList.remove('hidden');
+        discountBadge.textContent = `¡Descuento corporativo (10%) aplicado: -${formatCOP(discount)} COP!`;
+      } else {
+        discountBadge.classList.add('hidden');
+      }
+
+      const workUnits = (cat6 * 0.14) + (cctv * 0.25) + (fiber * 0.25) + (wifi * 0.25) + (visits * 0.5);
+      const estDays = workUnits === 0 ? 0 : Math.max(1, Math.ceil(workUnits));
+      const estCrew = (cat6 + cctv + fiber) >= 14 ? '3 técnicos certificados' : '2 técnicos certificados';
+      document.getElementById('calc-est-days').textContent = estDays === 0 ? 'Sin obra seleccionada' : `${estDays} ${estDays === 1 ? 'día hábil' : 'días hábiles'}`;
+      document.getElementById('calc-est-crew').textContent = estDays === 0 ? '—' : estCrew;
+
+      document.getElementById('calc-total').textContent = formatCOP(total);
+    }
+
+    function resetCalculatorToZero() {
+      document.getElementById('calc-cat6').value = 0;
+      document.getElementById('calc-cctv').value = 0;
+      document.getElementById('calc-fiber').value = 0;
+      document.getElementById('calc-wifi').value = 0;
+      document.getElementById('calc-visits').value = 0;
+      updateCalculator();
+      showToast('Calculadora reiniciada a 0', 'info');
+    }
+
+    function sendCalculatorToForm() {
+      const cat6 = document.getElementById('calc-cat6').value;
+      const cctv = document.getElementById('calc-cctv').value;
+      const fiber = document.getElementById('calc-fiber').value;
+      const wifi = document.getElementById('calc-wifi').value;
+      const visits = document.getElementById('calc-visits').value;
+      const total = document.getElementById('calc-total').textContent;
+      const zoneSelect = document.getElementById('calc-zone');
+      const zoneLabel = zoneSelect.options[zoneSelect.selectedIndex].text;
+
+      switchMainTab('contacto');
+      document.getElementById('lead-service').value = 'Cotización Personalizada / Favoritos';
+      document.getElementById('lead-details').value =
+        `Presupuesto calculado en la web (${total} COP):\n` +
+        `• Localidad: ${zoneLabel}\n` +
+        `• Puntos de Red Cat 6/6A: ${cat6}\n` +
+        `• Cámaras CCTV IP 4MP: ${cctv}\n` +
+        `• Fusiones Fibra Óptica: ${fiber}\n` +
+        `• Access Points Wi-Fi 6: ${wifi}\n` +
+        `• Visitas / Peinado Rack: ${visits}`;
+
+      showToast('Presupuesto cargado en solicitud', 'success');
+    }
+
+    // 7. GENERADOR DE COTIZACIÓN FORMAL EN PDF
+    function openQuotePdfFromCalculator() {
+      const cat6 = parseInt(document.getElementById('calc-cat6').value, 10);
+      const cctv = parseInt(document.getElementById('calc-cctv').value, 10);
+      const fiber = parseInt(document.getElementById('calc-fiber').value, 10);
+      const wifi = parseInt(document.getElementById('calc-wifi').value, 10);
+      const visits = parseInt(document.getElementById('calc-visits').value, 10);
+      const zoneSelect = document.getElementById('calc-zone');
+      const travelFee = parseInt(zoneSelect.value, 10);
+      const zoneLabel = zoneSelect.options[zoneSelect.selectedIndex].text;
+
+      const rows = [];
+      if (cat6 > 0) rows.push({ desc: 'Punto de Red Cat 6 / 6A Certificado Fluke', qty: cat6, unitPrice: 185000, total: cat6 * 185000 });
+      if (cctv > 0) rows.push({ desc: 'Cámara CCTV IP 4MP Instalada + Accesorios', qty: cctv, unitPrice: 365000, total: cctv * 365000 });
+      if (fiber > 0) rows.push({ desc: 'Fusión de Fibra Óptica + Bandeja ODF + OTDR', qty: fiber, unitPrice: 160000, total: fiber * 160000 });
+      if (wifi > 0) rows.push({ desc: 'Access Point Wi-Fi 6 Empresarial + VLANs', qty: wifi, unitPrice: 460000, total: wifi * 460000 });
+      if (visits > 0) rows.push({ desc: 'Visita Técnica de Diagnóstico / Peinado Rack', qty: visits, unitPrice: 240000, total: visits * 240000 });
+      if (travelFee > 0) rows.push({ desc: `Desplazamiento y Viáticos (${zoneLabel})`, qty: 1, unitPrice: travelFee, total: travelFee });
+
+      if (rows.length === 0) {
+        showToast('Selecciona al menos 1 ítem para generar el PDF', 'info');
+        return;
+      }
+
+      const subtotal = rows.reduce((s, r) => s + r.total, 0);
+      const serviceSubtotal = subtotal - travelFee;
+      const discount = serviceSubtotal >= 5000000 ? Math.round(serviceSubtotal * 0.10) : 0;
+      renderPdfModal(rows, subtotal, discount, subtotal - discount, zoneLabel);
+    }
+
+    function openQuotePdfFromFavorites() {
+      const savedItems = getAllCatalogItems().filter(item => favorites.includes(item.id));
+      if (savedItems.length === 0) {
+        showToast('Guarda al menos 1 favorito primero', 'info');
+        return;
+      }
+      const rows = savedItems.map(item => ({
+        desc: `${item.title} (${item.unit})`,
+        qty: 1,
+        unitPrice: item.price,
+        total: item.price
+      }));
+      const subtotal = rows.reduce((s, r) => s + r.total, 0);
+      renderPdfModal(rows, subtotal, 0, subtotal, 'Chía, Cajicá y Bogotá D.C. ($0 traslado)');
+    }
+
+    function renderPdfModal(rows, subtotal, discount, finalTotal, zoneText) {
+      const today = new Date().toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
+      const quoteNumber = 'COT-' + Math.floor(100000 + Math.random() * 900000);
+      window.currentQuoteMeta = { quoteNumber, today, rows, subtotal, discount, finalTotal, zoneText };
+      const printable = document.getElementById('pdf-quote-printable');
+
+      printable.innerHTML = `
+        <div class="flex flex-col sm:flex-row justify-between items-start gap-4 pb-6 border-b-2 border-slate-900">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900">NetCore Telecom & Redes S.A.S</h2>
+            <p class="text-xs text-slate-600 mt-1">NIT 901.482.319-4 • Ingeniería de Redes, Fibra Óptica & CCTV</p>
+            <p class="text-xs text-slate-600">Localidad de Ejecución: ${zoneText}</p>
+          </div>
+          <div class="sm:text-right">
+            <span class="px-3 py-1 bg-slate-900 text-white text-xs font-bold rounded">COTIZACIÓN FORMAL</span>
+            <p class="text-sm font-bold text-slate-900 mt-2">N° ${quoteNumber}</p>
+            <p class="text-xs text-slate-500">Fecha: ${today}</p>
+          </div>
+        </div>
+
+        <table class="w-full text-left border-collapse mt-6 text-xs sm:text-sm">
+          <thead>
+            <tr class="bg-slate-100 text-slate-800 border-y border-slate-300">
+              <th class="py-2.5 px-3 font-bold">Descripción del Servicio / Entregable</th>
+              <th class="py-2.5 px-3 font-bold text-center">Cant.</th>
+              <th class="py-2.5 px-3 font-bold text-right">Valor Unit.</th>
+              <th class="py-2.5 px-3 font-bold text-right">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            ${rows.map(r => `
+              <tr>
+                <td class="py-3 px-3 text-slate-800 font-medium">${r.desc}</td>
+                <td class="py-3 px-3 text-center text-slate-700">${r.qty}</td>
+                <td class="py-3 px-3 text-right text-slate-700">${formatCOP(r.unitPrice)}</td>
+                <td class="py-3 px-3 text-right font-bold text-slate-900">${formatCOP(r.total)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+
+        <div class="mt-6 flex justify-end">
+          <div class="w-full sm:w-72 space-y-2 text-sm bg-slate-50 p-4 rounded-lg border border-slate-200">
+            <div class="flex justify-between text-slate-600">
+              <span>Subtotal:</span>
+              <span class="font-semibold">${formatCOP(subtotal)}</span>
+            </div>
+            ${discount > 0 ? `
+              <div class="flex justify-between text-emerald-700 font-semibold">
+                <span>Descuento Volumen (10%):</span>
+                <span>-${formatCOP(discount)}</span>
+              </div>
+            ` : ''}
+            <div class="flex justify-between text-base font-extrabold text-slate-900 pt-2 border-t border-slate-300">
+              <span>Total Estimado:</span>
+              <span>${formatCOP(finalTotal)} COP</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-4 border-t border-slate-200 text-[11px] text-slate-500 space-y-1">
+          <p><strong>Condiciones Comerciales:</strong> Validez de la oferta por 15 días calendario. Valores expresados en Pesos Colombianos (COP).</p>
+          <p><strong>Garantía:</strong> 15 años en cableado estructurado certificado bajo norma ANSI/TIA-568-D y 12 meses en equipos activos y mano de obra.</p>
+        </div>
+      `;
+
+      const modal = document.getElementById('pdf-quote-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    async function downloadRealPdfFile() {
+      const element = document.getElementById('pdf-quote-printable');
+      const btn = document.getElementById('download-real-pdf-btn');
+      const quoteNum = window.currentQuoteMeta?.quoteNumber || 'COT-NETCORE';
+      const fileName = `Cotizacion-NetCore-${quoteNum}.pdf`;
+
+      if (typeof html2pdf === 'undefined') {
+        showToast('Generando vista de impresión alternativa...', 'info');
+        window.print();
+        return;
+      }
+
+      const originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳ Generando PDF...</span>';
+
+      try {
+        const opt = {
+          margin: [10, 10, 10, 10],
+          filename: fileName,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        await html2pdf().set(opt).from(element).save();
+        showToast(`Archivo ${fileName} descargado`, 'success');
+      } catch (err) {
+        console.error('Error generando PDF:', err);
+        showToast('No se pudo descargar directo; abriendo impresión...', 'info');
+        window.print();
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+      }
+    }
+
+    function copyQuoteTextToClipboard() {
+      const meta = window.currentQuoteMeta;
+      if (!meta) return;
+      const lines = [
+        `COTIZACIÓN FORMAL ${meta.quoteNumber} - NetCore Telecom & Redes`,
+        `Fecha: ${meta.today}`,
+        `Localidad: ${meta.zoneText}`,
+        `----------------------------------------`,
+        ...meta.rows.map(r => `• ${r.desc} (x${r.qty}): ${formatCOP(r.total)} COP`),
+        `----------------------------------------`,
+        `Subtotal: ${formatCOP(meta.subtotal)} COP`,
+        meta.discount > 0 ? `Descuento Volumen (10%): -${formatCOP(meta.discount)} COP` : null,
+        `TOTAL ESTIMADO: ${formatCOP(meta.finalTotal)} COP`
+      ].filter(Boolean).join('\n');
+
+      const temp = document.createElement('textarea');
+      temp.value = lines;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+      showToast('Cotización copiada al portapapeles', 'success');
+    }
+
+    function closePdfModal() {
+      const modal = document.getElementById('pdf-quote-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // 8. RASTREO DE ÓRDENES Y CASOS DE ÉXITO
+    const MOCK_TICKETS = {
+      'NT-2026-084': {
+        client: 'Logística Sabana S.A.S (Chía)',
+        service: 'Certificación Fluke 32 puntos Cat 6A + Peinado Rack',
+        status: 'En Pruebas Finales',
+        tech: 'Ing. Diego Ramírez (Cuadrilla #2)',
+        eta: 'Entrega de informe Fluke hoy 5:30 p.m.'
+      },
+      'NT-2026-112': {
+        client: 'Conjunto Reserva Norte (Cajicá)',
+        service: 'Enlace Fibra Óptica Porterías + 8 Cámaras IP 4MP',
+        status: 'En Sitio - Fusión Óptica',
+        tech: 'Téc. Andrés Castaño (Cuadrilla #1)',
+        eta: 'Finalización programada mañana 12:00 m.'
+      },
+      'NT-2026-149': {
+        client: 'Clínica Dental Nova (Bogotá)',
+        service: 'Implementación Wi-Fi 6 Empresarial (4 APs + VLANs)',
+        status: 'Completado y Certificado ✓',
+        tech: 'Ing. Laura Morales',
+        eta: 'Garantía activa por 15 años'
+      }
+    };
+
+    function quickTrack(code) {
+      document.getElementById('ticket-input').value = code;
+      trackServiceTicket();
+    }
+
+    function trackServiceTicket() {
+      const code = document.getElementById('ticket-input').value.trim().toUpperCase();
+      const box = document.getElementById('ticket-result');
+      const ticket = MOCK_TICKETS[code];
+
+      if (!ticket) {
+        box.innerHTML = `<span class="text-amber-400 font-semibold">No encontramos la orden "${code}".</span> Prueba con NT-2026-084, NT-2026-112 o NT-2026-149.`;
+        return;
+      }
+
+      box.innerHTML = `
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <strong class="text-white text-sm">${code} • ${ticket.client}</strong>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 text-[11px] font-semibold">${ticket.status}</span>
+          </div>
+          <p class="text-slate-300">${ticket.service}</p>
+          <p class="text-slate-400">Responsable: <span class="text-slate-200">${ticket.tech}</span></p>
+          <p class="text-cyan-400 font-medium">${ticket.eta}</p>
+        </div>
+      `;
+    }
+
+    const CASE_STUDIES = [
+      {
+        title: 'Peinado y Reestructuración Rack 24U',
+        before: 'Cables UTP enredados sin marquilla, obstrucción de ventilación en switches PoE y caídas intermitentes difíciles de rastrear.',
+        after: 'Patch cords slim codificados por color, marquilla térmica en ambos extremos, flujo de aire despejado y 100% de puntos certificados con Fluke.'
+      },
+      {
+        title: 'Enlace Troncal Fibra Óptica 10 Gbps en Bodega',
+        before: 'Enlace inalámbrico entre oficinas y bodega con pérdida de paquetes cada vez que operaban montacargas eléctricos.',
+        after: 'Tendido de 180m de fibra óptica armada inmune a interferencia electromagnética, bandeja ODF fusionada y latencia de 1 ms.'
+      },
+      {
+        title: 'Migración CCTV Analógico a IP 4MP en Conjunto',
+        before: 'Cámaras borrosas sin identificación de placas ni rostros en la noche, con disco duro sin respaldo.',
+        after: '16 cámaras IP 4MP con visión nocturna a color, NVR con 30 días de grabación continua y monitoreo en tiempo real en portería.'
+      }
+    ];
+
+    function selectCaseStudy(index) {
+      document.querySelectorAll('.case-tab-btn').forEach((btn, i) => {
+        btn.className = i === index
+          ? 'case-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500 text-slate-950'
+          : 'case-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-[#05080F] border border-slate-800 text-slate-300';
+      });
+
+      const cs = CASE_STUDIES[index];
+      document.getElementById('case-study-display').innerHTML = `
+        <div class="p-4 rounded-xl bg-rose-950/15 border border-rose-500/25">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-rose-400">Antes • Diagnóstico Inicial</span>
+          <h4 class="text-sm font-bold text-white mt-1">${cs.title}</h4>
+          <p class="text-xs text-slate-300 mt-2 leading-relaxed">${cs.before}</p>
+        </div>
+        <div class="p-4 rounded-xl bg-emerald-950/15 border border-emerald-500/25">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Después • Solución NetCore</span>
+          <h4 class="text-sm font-bold text-white mt-1">Resultado Entregado</h4>
+          <p class="text-xs text-slate-300 mt-2 leading-relaxed">${cs.after}</p>
+        </div>
+      `;
+    }
+
+    // 9. ASESOR TÉCNICO IA DEDICADO (PANTALLA COMPLETA ESTILO CHAT IA + RENOMBRAR CHATS)
+    let editingAiSessionId = null;
+
+    function saveAiSessions() {
+      localStorage.setItem(AI_STORAGE_KEY, JSON.stringify(aiSessions));
+    }
+
+    function getInitialGreeting(mode) {
+      if (mode === 'troubleshoot') {
+        return '¡Hola! Soy el Ingeniero Virtual de **NetCore Telecom**. Estoy en **Modo Diagnóstico**. Cuéntame qué falla tienes con tu red, Wi-Fi o cámaras para ayudarte a identificarla paso a paso.';
+      }
+      return '¡Hola! Soy el Ingeniero Virtual de **NetCore Telecom**. Te ayudo a calcular cuántas cámaras CCTV, puntos de red Cat 6A o Access Points Wi-Fi 6 necesita tu espacio. ¿Qué lugar deseas equipar?';
+    }
+
+    function ensureActiveAiSession() {
+      if (aiSessions.length === 0) {
+        createNewAiSession();
+      } else {
+        if (!activeAiSessionId || !aiSessions.some(s => s.id === activeAiSessionId)) {
+          activeAiSessionId = aiSessions[0].id;
+        }
+        updateActiveChatHeader();
+        renderAiHistory();
+        renderAiMessages();
+        renderAiQuickPrompts();
+      }
+    }
+
+    function updateActiveChatHeader() {
+      const session = aiSessions.find(s => s.id === activeAiSessionId);
+      const titleEl = document.getElementById('ai-active-chat-title');
+      if (titleEl && session) titleEl.textContent = session.title;
+    }
+
+    function createNewAiSession() {
+      const id = 'chat-' + Date.now();
+      const newSession = {
+        id,
+        title: aiMode === 'troubleshoot' ? 'Diagnóstico técnico' : 'Nueva consulta',
+        customTitle: false,
+        mode: aiMode,
+        updatedAt: new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }),
+        messages: [
+          {
+            role: 'ai',
+            text: getInitialGreeting(aiMode),
+            action: null
+          }
+        ]
+      };
+      aiSessions.unshift(newSession);
+      activeAiSessionId = id;
+      editingAiSessionId = null;
+      saveAiSessions();
+      updateActiveChatHeader();
+      renderAiHistory();
+      renderAiMessages();
+      renderAiQuickPrompts();
+    }
+
+    function selectAiSession(id) {
+      activeAiSessionId = id;
+      editingAiSessionId = null;
+      const session = aiSessions.find(s => s.id === id);
+      if (session && session.mode) {
+        aiMode = session.mode;
+        updateAiModeButtons();
+      }
+      updateActiveChatHeader();
+      renderAiHistory();
+      renderAiMessages();
+      renderAiQuickPrompts();
+
+      const sidebar = document.getElementById('ai-sidebar');
+      if (sidebar && !sidebar.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
+        toggleAiSidebarMobile();
+      }
+    }
+
+    function startRenameAiSession(e, id) {
+      if (e) e.stopPropagation();
+      editingAiSessionId = id;
+      renderAiHistory();
+      setTimeout(() => {
+        const inp = document.getElementById(`rename-input-${id}`);
+        if (inp) {
+          inp.focus();
+          inp.select();
+        }
+      }, 20);
+    }
+
+    function renameActiveAiSession() {
+      if (!activeAiSessionId) return;
+      if (window.innerWidth < 1024) {
+        const sidebar = document.getElementById('ai-sidebar');
+        if (sidebar.classList.contains('-translate-x-full')) toggleAiSidebarMobile();
+      }
+      startRenameAiSession(null, activeAiSessionId);
+    }
+
+    function commitRenameAiSession(id, newValue) {
+      const session = aiSessions.find(s => s.id === id);
+      const clean = (newValue || '').trim();
+      if (session && clean) {
+        session.title = clean.slice(0, 42);
+        session.customTitle = true;
+        saveAiSessions();
+        updateActiveChatHeader();
+        showToast('Nombre del chat actualizado', 'success');
+      }
+      editingAiSessionId = null;
+      renderAiHistory();
+    }
+
+    function handleRenameKeydown(e, id) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        commitRenameAiSession(id, e.target.value);
+      } else if (e.key === 'Escape') {
+        editingAiSessionId = null;
+        renderAiHistory();
+      }
+    }
+
+    function deleteAiSession(e, id) {
+      e.stopPropagation();
+      aiSessions = aiSessions.filter(s => s.id !== id);
+      if (aiSessions.length === 0) {
+        createNewAiSession();
+      } else {
+        if (activeAiSessionId === id) activeAiSessionId = aiSessions[0].id;
+        saveAiSessions();
+        updateActiveChatHeader();
+        renderAiHistory();
+        renderAiMessages();
+      }
+    }
+
+    function clearAllAiHistory() {
+      aiSessions = [];
+      createNewAiSession();
+      showToast('Historial de consultas limpiado', 'info');
+    }
+
+    function setAiMode(mode) {
+      aiMode = mode;
+      updateAiModeButtons();
+      const session = aiSessions.find(s => s.id === activeAiSessionId);
+      if (session) {
+        session.mode = mode;
+        session.messages.push({
+          role: 'ai',
+          text: mode === 'troubleshoot'
+            ? 'Cambié a **Modo Diagnóstico**. Cuéntame qué falla presentas (Wi-Fi intermitente, cámaras sin video o lentitud) y la revisamos juntos.'
+            : 'Volví a **Modo Cotización**. Dime cómo es tu espacio (local, oficina o bodega) y calculamos los equipos ideales.',
+          action: null
+        });
+        saveAiSessions();
+        renderAiMessages();
+      }
+      renderAiQuickPrompts();
+    }
+
+    function updateAiModeButtons() {
+      const btnQuote = document.getElementById('ai-mode-quote');
+      const btnTrouble = document.getElementById('ai-mode-troubleshoot');
+      if (aiMode === 'quote') {
+        btnQuote.className = 'px-2.5 py-1 rounded-md bg-cyan-500 text-slate-950 font-semibold transition';
+        btnTrouble.className = 'px-2.5 py-1 rounded-md text-slate-300 hover:text-white transition';
+      } else {
+        btnTrouble.className = 'px-2.5 py-1 rounded-md bg-amber-400 text-slate-950 font-semibold transition';
+        btnQuote.className = 'px-2.5 py-1 rounded-md text-slate-300 hover:text-white transition';
+      }
+    }
+
+    function renderAiQuickPrompts() {
+      const container = document.getElementById('ai-quick-prompts');
+      const prompts = aiMode === 'troubleshoot'
+        ? [
+            'Mi Wi-Fi se desconecta cada rato',
+            'Una cámara CCTV quedó sin video',
+            'El internet está muy lento en las tardes',
+            'Un punto de red no da enlace'
+          ]
+        : [
+            'Tengo un local comercial de 90 m²',
+            'Oficina para 15 personas en 2 pisos',
+            'Bodega de 400 m² con patio de carga',
+            'Necesito 6 cámaras y 10 puntos de red'
+          ];
+
+      container.innerHTML = prompts.map(p => `
+        <button type="button" onclick="sendQuickAiPrompt('${p}')" class="px-3 py-1.5 rounded-full bg-[#0C1220] hover:bg-slate-800 border border-slate-800 text-slate-300 whitespace-nowrap transition">
+          ${p}
+        </button>
+      `).join('');
+    }
+
+    function sendQuickAiPrompt(text) {
+      const input = document.getElementById('ai-user-input');
+      input.value = text;
+      handleAiSubmit(new Event('submit'));
+    }
+
+    function autoResizeAiTextarea(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 144) + 'px';
+    }
+
+    function handleAiInputKeydown(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleAiSubmit(new Event('submit'));
+      }
+    }
+
+    function renderAiHistory() {
+      const list = document.getElementById('ai-history-list');
+      list.innerHTML = aiSessions.map(s => {
+        const isActive = s.id === activeAiSessionId;
+        const isEditing = editingAiSessionId === s.id;
+
+        if (isEditing) {
+          return `
+            <div class="px-2.5 py-2 rounded-xl bg-slate-800/90 border border-cyan-500/60">
+              <input
+                id="rename-input-${s.id}"
+                type="text"
+                value="${s.title.replace(/"/g, '&quot;')}"
+                onkeydown="handleRenameKeydown(event, '${s.id}')"
+                onblur="commitRenameAiSession('${s.id}', this.value)"
+                class="w-full bg-[#05080F] text-white text-xs px-2 py-1 rounded border border-slate-700 focus:outline-none focus:border-cyan-400"
+              />
+            </div>
+          `;
+        }
+
+        return `
+          <div onclick="selectAiSession('${s.id}')" class="group flex items-center justify-between gap-1.5 px-3 py-2.5 rounded-xl cursor-pointer transition ${isActive ? 'bg-slate-800/90 text-white border border-slate-700/80' : 'hover:bg-slate-800/50 text-slate-300 border border-transparent'}">
+            <div class="min-w-0 flex-1">
+              <p class="text-xs font-medium truncate">${s.title}</p>
+              <p class="text-[10px] text-slate-500">${s.mode === 'troubleshoot' ? 'Diagnóstico' : 'Cotización'} • ${s.updatedAt}</p>
+            </div>
+            <div class="flex items-center gap-0.5 shrink-0">
+              <button onclick="startRenameAiSession(event, '${s.id}')" title="Cambiar nombre" class="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-700/60 transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+              </button>
+              <button onclick="deleteAiSession(event, '${s.id}')" title="Eliminar chat" class="p-1 rounded text-slate-400 hover:text-rose-400 hover:bg-slate-700/60 text-xs transition">
+                ✕
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function formatSimpleMarkdown(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+        .replace(/\n/g, '<br/>');
+    }
+
+    function renderAiMessages() {
+      const box = document.getElementById('ai-chat-messages');
+      const scrollArea = document.getElementById('ai-chat-scroll-area');
+      const session = aiSessions.find(s => s.id === activeAiSessionId);
+      if (!session) return;
+
+      box.innerHTML = session.messages.map(m => {
+        if (m.role === 'user') {
+          return `
+            <div class="flex justify-end">
+              <div class="max-w-[85%] sm:max-w-[72%] rounded-2xl rounded-br-xs bg-[#131C31] border border-slate-700/80 text-white px-4 py-3 text-xs sm:text-sm leading-relaxed">
+                ${m.text.replace(/\n/g, '<br/>')}
+              </div>
+            </div>
+          `;
+        }
+
+        const actionBtn = m.action
+          ? `<div class="mt-3 pt-2.5 border-t border-slate-800/80">
+               <button onclick='applyAiAction(${JSON.stringify(m.action)})' class="px-3.5 py-2 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-300 text-xs font-semibold transition">
+                 ${m.action.label}
+               </button>
+             </div>`
+          : '';
+
+        return `
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 text-slate-950 font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">
+              IA
+            </div>
+            <div class="flex-1 min-w-0 text-slate-200 text-xs sm:text-sm leading-relaxed pt-1">
+              <div>${formatSimpleMarkdown(m.text)}</div>
+              ${actionBtn}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (scrollArea) scrollArea.scrollTop = scrollArea.scrollHeight;
+    }
+
+    function applyAiAction(action) {
+      if (action.type === 'load_calculator') {
+        switchMainTab('cotizador');
+        document.getElementById('calc-cat6').value = action.cat6 || 0;
+        document.getElementById('calc-cctv').value = action.cctv || 0;
+        document.getElementById('calc-fiber').value = action.fiber || 0;
+        document.getElementById('calc-wifi').value = action.wifi || 0;
+        document.getElementById('calc-visits').value = action.visits || 0;
+        updateCalculator();
+        showToast('Dimensionamiento cargado en la calculadora', 'success');
+      } else if (action.type === 'book_visit') {
+        switchMainTab('contacto');
+        document.getElementById('lead-service').value = 'Cotización Personalizada / Favoritos';
+        document.getElementById('lead-details').value = action.details || 'Solicito visita técnica de diagnóstico.';
+      }
+    }
+
+    function generateSmartConsultingResponse(userText, session) {
+      const q = userText.toLowerCase().trim();
+
+      if (/^(hola+|buenas+|hey+|que tal|qué tal|como estas|cómo estás|holi|ola+)[\s!?.]*$/i.test(q)) {
+        return {
+          text: '¡Hola! ¿Cómo estás? Dime en qué te puedo echar una mano hoy: ¿quieres cotizar cámaras, puntos de red o revisar alguna falla?',
+          action: null
+        };
+      }
+
+      if (q.includes('gracias') || q.includes('muchas gracias') || q.includes('perfecto') || q.includes('vale')) {
+        return {
+          text: '¡Con mucho gusto! Aquí estoy si se te ocurre otra duda o quieres revisar algún detalle más.',
+          action: null
+        };
+      }
+
+      if (session.mode === 'troubleshoot' || q.includes('falla') || q.includes('desconecta') || q.includes('lento') || q.includes('sin video') || q.includes('rayas') || q.includes('no da enlace')) {
+        if (q.includes('wi-fi') || q.includes('wifi') || q.includes('desconecta')) {
+          return {
+            text: 'Cuando el Wi-Fi se desconecta por ratos, casi siempre es saturación en la banda de 2.4 GHz o demasiados equipos pegados al mismo router.\n\n¿Te pasa justo al lado del router o solo cuando te alejas un poco?',
+            action: { type: 'book_visit', label: 'Agendar Auditoría Wi-Fi ($240.000 COP)', details: 'Diagnóstico de inestabilidad y cobertura Wi-Fi.' }
+          };
+        }
+        if (q.includes('cámara') || q.includes('camara') || q.includes('video') || q.includes('rayas')) {
+          return {
+            text: 'Si una cámara perdió video o saca rayas de noche, normalmente es la fuente de poder caída o un conector sulfatado.\n\n¿Le pasa a una sola cámara o se cayeron varias al tiempo?',
+            action: { type: 'book_visit', label: 'Solicitar Revisión CCTV en Sitio', details: 'Diagnóstico y reparación de cámaras CCTV sin video.' }
+          };
+        }
+        if (q.includes('lento') || q.includes('tardes')) {
+          return {
+            text: 'Cuando se pone lento en horas pico suele ser algún equipo consumiendo todo el ancho de banda o un switch haciendo cuello de botella.\n\n¿Lo notas lento también por cable o únicamente por Wi-Fi?',
+            action: { type: 'book_visit', label: 'Agendar Diagnóstico de Red', details: 'Revisión de lentitud y cuello de botella en red.' }
+          };
+        }
+        return {
+          text: 'Dale, revisémoslo juntos. Dime primero: ¿el fallo te pasa en un solo equipo o en todos al mismo tiempo?',
+          action: null
+        };
+      }
+
+      const numPts = q.match(/(\d+)\s*(puntos|puestos|computadores|pcs)/);
+      const numCams = q.match(/(\d+)\s*(camaras|cámaras|cams)/);
+
+      if (numPts || numCams) {
+        const pts = numPts ? parseInt(numPts[1], 10) : 0;
+        const cams = numCams ? parseInt(numCams[1], 10) : 0;
+        const wifi = pts >= 12 ? 2 : (pts > 0 ? 1 : 0);
+        const est = (pts * 185000) + (cams * 365000) + (wifi * 460000);
+        return {
+          text: `Para eso te iría bien con **${pts} puntos Cat 6A**, **${cams} cámaras IP 4MP** y **${wifi} Access Point Wi-Fi 6** (sale aprox. en **${formatCOP(est)} COP**).\n\n¿Todo va en un mismo piso o hay que pasar cable entre varios niveles?`,
+          action: {
+            type: 'load_calculator',
+            label: 'Cargar este cálculo en la Calculadora COP →',
+            cat6: pts,
+            cctv: cams,
+            fiber: 0,
+            wifi: wifi,
+            visits: 1
+          }
+        };
+      }
+
+      if (q.includes('local') || q.includes('tienda') || q.includes('restaurante')) {
+        return {
+          text: 'Para un local comercial normalmente basta con cubrir caja, entrada y bodega con **4 cámaras IP 4MP**, **2 puntos de red** para datáfono/POS y **1 Wi-Fi 6**.\n\n¿Tiene salida a calle o segundo piso para ver si hace falta alguna cámara extra?',
+          action: {
+            type: 'load_calculator',
+            label: 'Cargar paquete Local Comercial ($2.290.000 COP) →',
+            cat6: 2,
+            cctv: 4,
+            fiber: 0,
+            wifi: 1,
+            visits: 0
+          }
+        };
+      }
+
+      if (q.includes('oficina')) {
+        return {
+          text: 'En oficina lo más cómodo es dejar 1 punto cableado por cada puesto fijo y buen Wi-Fi 6 para portátiles y salas.\n\n¿Cuántas personas trabajan ahí más o menos?',
+          action: {
+            type: 'load_calculator',
+            label: 'Simular Oficina Base (12 pts + 2 APs) →',
+            cat6: 12,
+            cctv: 2,
+            fiber: 0,
+            wifi: 2,
+            visits: 1
+          }
+        };
+      }
+
+      if (q.includes('bodega') || q.includes('galpón') || q.includes('patio')) {
+        return {
+          text: 'En bodega conviene tirar **fibra óptica** hacia la oficina para que no haya interferencia eléctrica y poner **6 a 8 cámaras IP 4MP** con buen alcance nocturno.\n\n¿También necesitas cubrir patio externo de carga?',
+          action: {
+            type: 'load_calculator',
+            label: 'Cargar base Bodega (8 cáms + Fibra + 2 APs) →',
+            cat6: 6,
+            cctv: 8,
+            fiber: 4,
+            wifi: 2,
+            visits: 1
+          }
+        };
+      }
+
+      return {
+        text: 'Claro, cuéntame un poco más de lo que tienes en mente o qué espacio quieres equipar (una casa, un local, una oficina...) y lo vamos armando juntos.',
+        action: null
+      };
+    }
+
+    async function handleAiSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('ai-user-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      ensureActiveAiSession();
+      const session = aiSessions.find(s => s.id === activeAiSessionId);
+      if (!session) return;
+
+      if (session.messages.length <= 1 && !session.customTitle) {
+        session.title = text.length > 30 ? text.slice(0, 30) + '...' : text;
+        updateActiveChatHeader();
+      }
+
+      session.messages.push({ role: 'user', text, action: null });
+      session.updatedAt = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+      input.value = '';
+      input.style.height = 'auto';
+      renderAiHistory();
+      renderAiMessages();
+
+      const box = document.getElementById('ai-chat-messages');
+      const scrollArea = document.getElementById('ai-chat-scroll-area');
+      const typingId = 'typing-' + Date.now();
+      box.insertAdjacentHTML('beforeend', `
+        <div id="${typingId}" class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 text-slate-950 font-extrabold text-xs flex items-center justify-center shrink-0">
+            IA
+          </div>
+          <div class="text-slate-400 text-xs sm:text-sm pt-1.5">
+            Analizando consulta...
+          </div>
+        </div>
+      `);
+      if (scrollArea) scrollArea.scrollTop = scrollArea.scrollHeight;
+
+      const fallbackReply = generateSmartConsultingResponse(text, session);
+
+      let finalReply = fallbackReply;
+      try {
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+        const sysPrompt = session.mode === 'troubleshoot'
+          ? 'Eres un asistente cercano, natural y conversacional en la web de NetCore Telecom (Colombia). Habla como una persona amable y relajada (como un amigo que sabe mucho de redes y tecnología), sin discursos corporativos ni saludos repetitivos si ya saludaste antes. Respuestas cortas (2-4 líneas). Si el usuario solo saluda o conversa casualmente, respóndele natural; si tiene una falla técnica, ayúdalo paso a paso.'
+          : 'Eres un asistente cercano, natural y conversacional en la web de NetCore Telecom (Colombia). Habla como una persona amable y relajada (como un amigo experto en redes y cámaras), sin discursos robóticos de empresa ni volver a presentarte si ya lo hiciste. Respuestas cortas (2-4 líneas). Si el usuario saluda o charla casualmente, sigue la conversación con naturalidad; si pide ayuda con cámaras, cableado o Wi-Fi, guíalo paso a paso.';
+
+        const historyParts = session.messages.slice(-6).map(m => ({
+          role: m.role === 'user' ? 'user' : 'model',
+          parts: [{ text: m.text }]
+        }));
+
+        const res = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: historyParts,
+            systemInstruction: { parts: [{ text: sysPrompt }] }
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (aiText) {
+            finalReply = { text: aiText.trim(), action: fallbackReply.action };
+          }
+        }
+      } catch (_) {}
+
+      const typingEl = document.getElementById(typingId);
+      if (typingEl) typingEl.remove();
+
+      session.messages.push({
+        role: 'ai',
+        text: finalReply.text,
+        action: finalReply.action
+      });
+      saveAiSessions();
+      renderAiMessages();
+    }
+
+    // 10. WHATSAPP & FORMULARIO
+    function openWhatsAppWithContext() {
+      const phone = '573105550194';
+      const savedItems = getAllCatalogItems().filter(item => favorites.includes(item.id));
+      let message = 'Hola NetCore Telecom, quisiera recibir asesoría técnica sobre sus servicios de redes y telecomunicaciones.';
+      if (savedItems.length > 0) {
+        const list = savedItems.map(i => `- ${i.title} (${formatCOP(i.price)})`).join('\n');
+        message = `Hola NetCore Telecom, guardé estos servicios en mi lista de favoritos y quiero cotizarlos:\n\n${list}`;
+      }
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+    }
+
+    function openEmergencyWhatsApp() {
+      const phone = '573105550194';
+      const msg = 'URGENTE - Solicito atención de cuadrilla de emergencia 24/7 por caída crítica de red / fibra óptica.';
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+    }
+
+    // CONFIGURACIÓN DE CONEXIÓN REAL A BASE DE DATOS / CORREO (WEB3FORMS O GOOGLE APPS SCRIPT)
+    // Reemplaza WEB3FORMS_ACCESS_KEY con tu clave gratuita de https://web3forms.com o pega tu URL de Google Sheets Apps Script
+    const LEAD_CLOUD_CONFIG = {
+      web3formsAccessKey: 'TU_ACCESS_KEY_GRATUITA_WEB3FORMS',
+      googleSheetsWebhookUrl: '' // Opcional: URL de despliegue de Google Apps Script
+    };
+
+    let lastSubmittedLead = null;
+
+    async function handleContactSubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('lead-submit-btn');
+      const originalBtnHtml = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>⏳ Guardando en base de datos...</span>';
+
+      const radicado = 'RAD-2026-' + Math.floor(1000 + Math.random() * 9000);
+      const leadPayload = {
+        radicado,
+        fecha: new Date().toLocaleString('es-CO'),
+        name: document.getElementById('lead-name').value.trim(),
+        company: document.getElementById('lead-company').value.trim(),
+        phone: document.getElementById('lead-phone').value.trim(),
+        email: document.getElementById('lead-email').value.trim() || 'No especificado',
+        service: document.getElementById('lead-service').value,
+        message: document.getElementById('lead-details').value.trim()
+      };
+
+      lastSubmittedLead = leadPayload;
+
+      // 1. Respaldo local inmediato
+      const storedLeads = JSON.parse(localStorage.getItem('netcore_cloud_leads_backup') || '[]');
+      storedLeads.unshift(leadPayload);
+      localStorage.setItem('netcore_cloud_leads_backup', JSON.stringify(storedLeads));
+
+      // 2. Envío real gratuito a la nube (Google Sheets Webhook o Web3Forms Email API)
+      let cloudDelivered = false;
+      try {
+        if (LEAD_CLOUD_CONFIG.googleSheetsWebhookUrl) {
+          await fetch(LEAD_CLOUD_CONFIG.googleSheetsWebhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(leadPayload)
+          });
+          cloudDelivered = true;
+        } else if (
+          LEAD_CLOUD_CONFIG.web3formsAccessKey &&
+          LEAD_CLOUD_CONFIG.web3formsAccessKey !== 'TU_ACCESS_KEY_GRATUITA_WEB3FORMS'
+        ) {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: LEAD_CLOUD_CONFIG.web3formsAccessKey,
+              subject: `[${radicado}] Nueva Cotización - ${leadPayload.company}`,
+              from_name: 'NetCore Telecom Web',
+              ...leadPayload
+            })
+          });
+          const data = await res.json();
+          if (data.success) cloudDelivered = true;
+        }
+      } catch (err) {
+        console.warn('Webhook en espera de clave API activa:', err);
+      }
+
+      document.getElementById('lead-radicado-code').textContent = radicado;
+      document.getElementById('lead-sync-status').textContent = cloudDelivered
+        ? '✓ Sincronizado en tiempo real con la base de datos y correo de ingeniería. Un especialista te contactará en menos de 2 horas hábiles.'
+        : '✓ Solicitud guardada con radicado oficial (activa tu Access Key gratuita de Web3Forms o URL de Google Sheets en LEAD_CLOUD_CONFIG para recibirlos directo en tu bandeja).';
+
+      document.getElementById('contact-success').classList.remove('hidden');
+      showToast(`Solicitud ${radicado} registrada`, 'success');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnHtml;
+      e.target.reset();
+    }
+
+    function sendLastLeadToWhatsApp() {
+      if (!lastSubmittedLead) return;
+      const phone = '573105550194';
+      const msg =
+        `Hola NetCore Telecom, acabo de radicar la solicitud *${lastSubmittedLead.radicado}*:\n` +
+        `• Nombre: ${lastSubmittedLead.name}\n` +
+        `• Empresa: ${lastSubmittedLead.company}\n` +
+        `• Teléfono: ${lastSubmittedLead.phone}\n` +
+        `• Servicio: ${lastSubmittedLead.service}\n` +
+        `• Detalles: ${lastSubmittedLead.message}`;
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+    }
+
+    // 11. ANIMACIONES DE SCROLL Y TOASTS
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const border = type === 'success' ? 'border-emerald-500/50 text-emerald-200' : 'border-cyan-500/40 text-slate-200';
+      toast.className = `px-4 py-2.5 rounded-xl bg-[#0C1220] border ${border} text-xs font-medium shadow-xl transition-opacity duration-300`;
+      toast.textContent = msg;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 2800);
+    }
+
+    let scrollRevealObserver = null;
+
+    function observeScrollElements() {
+      if (scrollRevealObserver) scrollRevealObserver.disconnect();
+
+      scrollRevealObserver = new IntersectionObserver((entries) => {
+        const scrollingUp = window.scrollY < lastScrollY;
+        entries.forEach((entry, idx) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${Math.min(idx * 45, 180)}ms`;
+            entry.target.classList.add('revealed');
+            entry.target.classList.remove('from-top');
+          } else {
+            entry.target.style.transitionDelay = '0ms';
+            entry.target.classList.remove('revealed');
+            if (scrollingUp) entry.target.classList.add('from-top');
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+
+      document.querySelectorAll('.scroll-reveal').forEach(el => scrollRevealObserver.observe(el));
+    }
+
+    window.addEventListener('scroll', () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? Math.min(100, Math.round((window.scrollY / docHeight) * 100)) : 0;
+      document.getElementById('scroll-progress-bar').style.width = `${pct}%`;
+      lastScrollY = window.scrollY;
+    }, { passive: true });
+
+    // INICIALIZACIÓN
+    window.addEventListener('DOMContentLoaded', () => {
+      renderServices();
+      renderPlans();
+      updateFavBadges();
+      updateCalculator();
+      selectCaseStudy(0);
+      ensureActiveAiSession();
+      observeScrollElements();
+    });
+  </script>
+</body>
+</html>
