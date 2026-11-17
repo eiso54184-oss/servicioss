@@ -44,17 +44,6 @@
       box-shadow: 0 12px 30px -10px rgba(6, 182, 212, 0.14);
     }
 
-    .subtab-btn {
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .subtab-btn.active {
-      background: rgba(6, 182, 212, 0.12);
-      color: #22D3EE;
-      border-color: rgba(6, 182, 212, 0.5);
-    }
-
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -2458,14 +2447,63 @@
       window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
     }
 
-    // CONFIGURACIÓN DE CONEXIÓN REAL A BASE DE DATOS / CORREO (WEB3FORMS O GOOGLE APPS SCRIPT)
-    // Reemplaza WEB3FORMS_ACCESS_KEY con tu clave gratuita de https://web3forms.com o pega tu URL de Google Sheets Apps Script
+    // CONFIGURACIÓN DE CONEXIÓN REAL A BASE DE DATOS / CORREO (GOOGLE APPS SCRIPT + GOOGLE SHEETS)
     const LEAD_CLOUD_CONFIG = {
-      web3formsAccessKey: 'TU_ACCESS_KEY_GRATUITA_WEB3FORMS',
-      googleSheetsWebhookUrl: '' // Opcional: URL de despliegue de Google Apps Script
+      web3formsAccessKey: '', // Desactivado para evitar correos duplicados; usamos Google Apps Script con diseño HTML propio
+      googleSheetsWebhookUrl: 'https://script.google.com/macros/s/AKfycbw0mwtWUS1l3t6udLQXBlJn1qF-P-UeUfUl0ZqzvHOuBKpE6JNw2-Wasqvr7ZoDhRS3/exec'
     };
 
     let lastSubmittedLead = null;
+
+    function formatColombianWhatsAppReplyUrl(rawPhone, clientName, radicado, serviceName) {
+      const digits = (rawPhone || '').replace(/\D/g, '');
+      if (!digits) return 'Teléfono no válido para enlace directo';
+      const fullNumber = digits.startsWith('57') && digits.length >= 12 ? digits : '57' + digits;
+      const replyText = `Hola ${clientName}, recibimos tu solicitud ${radicado} en NetCore Telecom sobre "${serviceName}". ¿En qué horario te queda bien conversar?`;
+      return `https://wa.me/${fullNumber}?text=${encodeURIComponent(replyText)}`;
+    }
+
+    function buildAutoTechnicalContext() {
+      const chunks = [];
+      const calcTotal = document.getElementById('calc-total')?.textContent || '$0';
+      if (calcTotal !== '$0') {
+        const zoneSelect = document.getElementById('calc-zone');
+        const zoneName = zoneSelect?.options[zoneSelect.selectedIndex]?.text || 'No especificada';
+        const c6 = document.getElementById('calc-cat6')?.value || 0;
+        const cc = document.getElementById('calc-cctv')?.value || 0;
+        const fb = document.getElementById('calc-fiber')?.value || 0;
+        const wf = document.getElementById('calc-wifi')?.value || 0;
+        const vs = document.getElementById('calc-visits')?.value || 0;
+        chunks.push(`Calculadora activa (${calcTotal} COP | Zona: ${zoneName}): ${c6} pts Cat6A, ${cc} cáms CCTV, ${fb} fusiones fibra, ${wf} APs Wi-Fi 6, ${vs} visitas`);
+      }
+
+      const savedFavs = getAllCatalogItems().filter(i => favorites.includes(i.id));
+      if (savedFavs.length > 0) {
+        chunks.push('Favoritos guardados: ' + savedFavs.map(f => `${f.title} (${formatCOP(f.price)})`).join(', '));
+      }
+
+      return chunks.length > 0 ? chunks.join(' || ') : 'Solicitud directa sin ítems previos en calculadora o favoritos';
+    }
+
+    function classifyRequestBadge(serviceName, messageText) {
+      const s = (serviceName + ' ' + messageText).toLowerCase();
+      if (s.includes('plan ') || s.includes('mensual') || s.includes('pyme') || s.includes('corporativo') || s.includes('enterprise')) {
+        return 'PLAN MENSUAL SLA';
+      }
+      if (s.includes('cctv') || s.includes('cámara') || s.includes('camara')) {
+        return 'COTIZACIÓN CCTV';
+      }
+      if (s.includes('fibra') || s.includes('otdr')) {
+        return 'COTIZACIÓN FIBRA';
+      }
+      if (s.includes('wi-fi') || s.includes('wifi')) {
+        return 'COTIZACIÓN WI-FI 6';
+      }
+      if (s.includes('cableado') || s.includes('cat 6') || s.includes('rack')) {
+        return 'COTIZACIÓN REDES';
+      }
+      return 'SOLICITUD TÉCNICA';
+    }
 
     async function handleContactSubmit(e) {
       e.preventDefault();
@@ -2475,73 +2513,115 @@
       submitBtn.innerHTML = '<span>⏳ Guardando en base de datos...</span>';
 
       const radicado = 'RAD-2026-' + Math.floor(1000 + Math.random() * 9000);
+      const fechaCol = new Date().toLocaleString('es-CO', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      });
+
       const leadPayload = {
         radicado,
-        fecha: new Date().toLocaleString('es-CO'),
+        fecha: fechaCol,
         name: document.getElementById('lead-name').value.trim(),
         company: document.getElementById('lead-company').value.trim(),
         phone: document.getElementById('lead-phone').value.trim(),
-        email: document.getElementById('lead-email').value.trim() || 'No especificado',
+        email: document.getElementById('lead-email').value.trim() || 'No proporcionado',
         service: document.getElementById('lead-service').value,
         message: document.getElementById('lead-details').value.trim()
       };
 
-      lastSubmittedLead = leadPayload;
+      const categoryBadge = classifyRequestBadge(leadPayload.service, leadPayload.message);
+      const whatsappQuickLink = formatColombianWhatsAppReplyUrl(
+        leadPayload.phone,
+        leadPayload.name,
+        radicado,
+        leadPayload.service
+      );
+      const autoContextSummary = buildAutoTechnicalContext();
+      const fullMessageBody = autoContextSummary && !autoContextSummary.startsWith('Solicitud directa')
+        ? `${leadPayload.message}\n\n[Resumen Técnico Web]: ${autoContextSummary}`
+        : leadPayload.message;
+
+      const scriptPayload = {
+        radicado: leadPayload.radicado,
+        fecha: leadPayload.fecha,
+        categoryBadge: categoryBadge,
+        name: leadPayload.name,
+        company: leadPayload.company || 'Particular',
+        phone: leadPayload.phone,
+        email: leadPayload.email,
+        service: leadPayload.service,
+        message: fullMessageBody,
+        whatsappQuickLink: whatsappQuickLink
+      };
+
+      lastSubmittedLead = { ...leadPayload, message: fullMessageBody };
 
       // 1. Respaldo local inmediato
       const storedLeads = JSON.parse(localStorage.getItem('netcore_cloud_leads_backup') || '[]');
-      storedLeads.unshift(leadPayload);
+      storedLeads.unshift(scriptPayload);
       localStorage.setItem('netcore_cloud_leads_backup', JSON.stringify(storedLeads));
 
-      // 2. Envío real gratuito a la nube (Google Sheets Webhook o Web3Forms Email API)
+      // 2. Envío directo a Google Apps Script (Guarda fila en Google Sheets + Envía Correo HTML Corporativo)
       let cloudDelivered = false;
       try {
         if (LEAD_CLOUD_CONFIG.googleSheetsWebhookUrl) {
           await fetch(LEAD_CLOUD_CONFIG.googleSheetsWebhookUrl, {
             method: 'POST',
             mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(leadPayload)
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(scriptPayload)
           });
           cloudDelivered = true;
         } else if (
           LEAD_CLOUD_CONFIG.web3formsAccessKey &&
           LEAD_CLOUD_CONFIG.web3formsAccessKey !== 'TU_ACCESS_KEY_GRATUITA_WEB3FORMS'
         ) {
+          const structuredEmailFields = {
+            '01_Radicado_y_Fecha': `${radicado}  |  ${fechaCol}`,
+            '02_Cliente_y_Empresa': `${leadPayload.name}  —  ${leadPayload.company}`,
+            '03_Telefono_Contacto': leadPayload.phone,
+            '04_Correo_Cliente': leadPayload.email,
+            '05_Servicio_Solicitado': leadPayload.service,
+            '06_Detalle_y_Presupuesto': fullMessageBody,
+            '07_Responder_Directo_WhatsApp': whatsappQuickLink
+          };
+
           const res = await fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
             body: JSON.stringify({
               access_key: LEAD_CLOUD_CONFIG.web3formsAccessKey,
-              subject: `[${radicado}] Nueva Cotización - ${leadPayload.company}`,
-              from_name: 'NetCore Telecom Web',
-              ...leadPayload
+              subject: `[${categoryBadge}] ${radicado} • ${leadPayload.company} (${leadPayload.name})`,
+              from_name: 'Portal Ingeniería NetCore Telecom',
+              replyto: leadPayload.email.includes('@') ? leadPayload.email : undefined,
+              ...structuredEmailFields
             })
           });
           const data = await res.json();
           if (data.success) cloudDelivered = true;
         }
       } catch (err) {
-        console.warn('Webhook en espera de clave API activa:', err);
+        console.warn('Error al conectar con Google Apps Script:', err);
       }
 
       document.getElementById('lead-radicado-code').textContent = radicado;
       document.getElementById('lead-sync-status').textContent = cloudDelivered
-        ? '✓ Sincronizado en tiempo real con la base de datos y correo de ingeniería. Un especialista te contactará en menos de 2 horas hábiles.'
-        : '✓ Solicitud guardada con radicado oficial (activa tu Access Key gratuita de Web3Forms o URL de Google Sheets en LEAD_CLOUD_CONFIG para recibirlos directo en tu bandeja).';
+        ? '✓ Solicitud guardada en Google Sheets y ficha comercial enviada a nuestro correo de ingeniería. Un especialista te contactará en menos de 2 horas hábiles.'
+        : '✓ Solicitud guardada con radicado oficial en respaldo local.';
 
-      document.getElementById('contact-success').classList.remove('hidden');
-      showToast(`Solicitud ${radicado} registrada`, 'success');
+      const banner = document.getElementById('contact-success');
+      banner.classList.remove('hidden');
+      e.target.reset();
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalBtnHtml;
-      e.target.reset();
+      showToast(`Solicitud ${radicado} enviada`, 'success');
     }
 
     function sendLastLeadToWhatsApp() {
       if (!lastSubmittedLead) return;
       const phone = '573105550194';
       const msg =
-        `Hola NetCore Telecom, acabo de radicar la solicitud *${lastSubmittedLead.radicado}*:\n` +
+        `Hola NetCore Telecom, envío respaldo de mi solicitud ${lastSubmittedLead.radicado}:\n` +
         `• Nombre: ${lastSubmittedLead.name}\n` +
         `• Empresa: ${lastSubmittedLead.company}\n` +
         `• Teléfono: ${lastSubmittedLead.phone}\n` +
