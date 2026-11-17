@@ -2389,7 +2389,6 @@
       let finalReply = fallbackReply;
       try {
         const apiKey = "";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
         const sysPrompt = session.mode === 'troubleshoot'
           ? 'Eres un asistente cercano, natural y conversacional en la web de NetCore Telecom (Colombia). Habla como una persona amable y relajada (como un amigo que sabe mucho de redes y tecnología), sin discursos corporativos ni saludos repetitivos si ya saludaste antes. Respuestas cortas (2-4 líneas). Si el usuario solo saluda o conversa casualmente, respóndele natural; si tiene una falla técnica, ayúdalo paso a paso.'
           : 'Eres un asistente cercano, natural y conversacional en la web de NetCore Telecom (Colombia). Habla como una persona amable y relajada (como un amigo experto en redes y cámaras), sin discursos robóticos de empresa ni volver a presentarte si ya lo hiciste. Respuestas cortas (2-4 líneas). Si el usuario saluda o charla casualmente, sigue la conversación con naturalidad; si pide ayuda con cámaras, cableado o Wi-Fi, guíalo paso a paso.';
@@ -2399,20 +2398,41 @@
           parts: [{ text: m.text }]
         }));
 
-        const res = await fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: historyParts,
-            systemInstruction: { parts: [{ text: sysPrompt }] }
-          })
-        });
+        if (apiKey) {
+          const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+          const res = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: historyParts,
+              systemInstruction: { parts: [{ text: sysPrompt }] }
+            })
+          });
 
-        if (res.ok) {
-          const data = await res.json();
-          const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (aiText) {
-            finalReply = { text: aiText.trim(), action: fallbackReply.action };
+          if (res.ok) {
+            const data = await res.json();
+            const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (aiText) {
+              finalReply = { text: aiText.trim(), action: fallbackReply.action };
+            }
+          }
+        } else if (LEAD_CLOUD_CONFIG.googleSheetsWebhookUrl) {
+          // Puente seguro vía Google Apps Script (funciona en GitHub Pages sin exponer API Key)
+          const bridgeRes = await fetch(LEAD_CLOUD_CONFIG.googleSheetsWebhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              action: 'ai_chat',
+              contents: historyParts,
+              sysPrompt: sysPrompt
+            })
+          });
+
+          if (bridgeRes.ok) {
+            const bridgeData = await bridgeRes.json();
+            if (bridgeData.status === 'ok' && bridgeData.reply) {
+              finalReply = { text: bridgeData.reply.trim(), action: fallbackReply.action };
+            }
           }
         }
       } catch (_) {}
